@@ -47,14 +47,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="PsdLayerInfo.cs" />
+    <Compile Include="LayerFolderPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayerFolderPanel.Designer.cs">
+      <DependentUpon>LayerFolderPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LayerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LayerPanel.Designer.cs">
+      <DependentUpon>LayerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="PsdLayerFlags.cs" />
     <Compile Include="PsdCompression.cs" />
     <Compile Include="PsdChannelId.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="ImageToolbox.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ImageToolbox.Designer.cs">
+      <DependentUpon>ImageToolbox.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,8 +77,14 @@
     <Compile Include="PsdBinaryReader.cs" />
     <Compile Include="PsdImageResource.cs" />
     <Compile Include="PsdLayer.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="ImageToolbox.resx">
+      <DependentUpon>ImageToolbox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerFolderPanel.resx">
+      <DependentUpon>LayerFolderPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LayerPanel.resx">
+      <DependentUpon>LayerPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

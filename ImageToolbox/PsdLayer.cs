@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace ImageToolbox
@@ -35,18 +35,6 @@ namespace ImageToolbox
                 extraLength;
             int maskLength = reader.ReadInt32();
             extraLength -= maskLength + 4;
-            if (maskLength > 0)
-            {
-                MaskBounds = reader.ReadRectangle();
-                maskLength -= 16;
-                DefaultColor = reader.ReadByte();
-                maskLength -= 1;
-            }
-            else
-            {
-                MaskBounds = Rectangle.Empty;
-                DefaultColor = 0;
-            }
             Check.Equals(nameof(maskLength), maskLength, 0);
             int blendLength = reader.ReadInt32();
             extraLength -= blendLength + 4;
@@ -55,8 +43,14 @@ namespace ImageToolbox
             int namePad = (4 - (Name.Length + 1) % 4) % 4;
             Check.NullPadding(reader, namePad);
             extraLength -= Name.Length + 1 + namePad;
-            ExtraData = reader.ReadBytes(extraLength);
-            extraLength -= extraLength;
+            List<PsdLayerInfo> addiInfo = new List<PsdLayerInfo>();
+            while(extraLength > 0)
+            {
+                PsdLayerInfo layerInfo = PsdLayerInfo.ParseLayerInfo(reader);
+                addiInfo.Add(layerInfo);
+                extraLength -= layerInfo.DataLength;
+            }
+            AdditionalInfo = addiInfo.ToArray();
             Check.Equals(nameof(extraLength), extraLength, 0);
         }
 
@@ -67,12 +61,19 @@ namespace ImageToolbox
         public byte Opacity { get; private set; }
         public bool Clipping { get; private set; }
         public PsdLayerFlags Flags { get; private set; }
-        public Rectangle MaskBounds { get; private set; }
-        public byte DefaultColor { get; private set; }
         public string Name { get; private set; }
-        public byte[] ExtraData { get; private set; }
+        public PsdLayerInfo[] AdditionalInfo { get; private set; }
 
         public int DataLength { get; private set; }
+
+        public PsdLayerInfo.SectionDivider.Type? DividerType => 
+            AdditionalInfo.OfType<PsdLayerInfo.SectionDivider>().FirstOrDefault()?.DividerType;
+
+        public bool IsFolderBegin =>
+            DividerType == PsdLayerInfo.SectionDivider.Type.ClosedFolder ||
+            DividerType == PsdLayerInfo.SectionDivider.Type.OpenFolder;
+
+        public bool IsFolderEnd => DividerType == PsdLayerInfo.SectionDivider.Type.BoundingSection;
 
         public Bitmap GetBitmap()
         {
