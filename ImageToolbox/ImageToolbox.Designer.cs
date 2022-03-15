@@ -83,27 +83,33 @@ namespace ImageToolbox
             // 
             // imagePanel
             // 
+            this.imagePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.imagePanel.Controls.Add(this.mainPictureBox);
             this.imagePanel.Controls.Add(this.pathLabel);
-            this.imagePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.imagePanel.Location = new System.Drawing.Point(0, 24);
+            this.imagePanel.Location = new System.Drawing.Point(10, 34);
             this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(784, 220);
+            this.imagePanel.Size = new System.Drawing.Size(764, 220);
             this.imagePanel.TabIndex = 5;
             // 
             // layersPanel
             // 
+            this.layersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.layersPanel.AutoScroll = true;
-            this.layersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layersPanel.Location = new System.Drawing.Point(0, 244);
+            this.layersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.layersPanel.Location = new System.Drawing.Point(10, 264);
             this.layersPanel.Name = "layersPanel";
-            this.layersPanel.Size = new System.Drawing.Size(784, 348);
+            this.layersPanel.Size = new System.Drawing.Size(764, 318);
             this.layersPanel.TabIndex = 6;
             // 
             // ImageToolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(784, 592);
             this.Controls.Add(this.layersPanel);
             this.Controls.Add(this.imagePanel);

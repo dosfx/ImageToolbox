@@ -31,7 +31,7 @@ namespace ImageToolbox
         {
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.folderRowPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.collapseButton = new System.Windows.Forms.Button();
             this.folderBox = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel.SuspendLayout();
@@ -62,7 +62,7 @@ namespace ImageToolbox
             // folderRowPanel
             // 
             this.tableLayoutPanel.SetColumnSpan(this.folderRowPanel, 2);
-            this.folderRowPanel.Controls.Add(this.button1);
+            this.folderRowPanel.Controls.Add(this.collapseButton);
             this.folderRowPanel.Controls.Add(this.folderBox);
             this.folderRowPanel.Controls.Add(this.nameLabel);
             this.folderRowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -71,16 +71,18 @@ namespace ImageToolbox
             this.folderRowPanel.Padding = new System.Windows.Forms.Padding(10);
             this.folderRowPanel.Size = new System.Drawing.Size(750, 40);
             this.folderRowPanel.TabIndex = 0;
+            this.folderRowPanel.WrapContents = false;
             // 
-            // button1
+            // collapseButton
             // 
-            this.button1.Location = new System.Drawing.Point(10, 10);
-            this.button1.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(20, 20);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "+";
-            this.button1.UseVisualStyleBackColor = true;
+            this.collapseButton.Location = new System.Drawing.Point(10, 10);
+            this.collapseButton.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.collapseButton.Name = "collapseButton";
+            this.collapseButton.Size = new System.Drawing.Size(20, 20);
+            this.collapseButton.TabIndex = 2;
+            this.collapseButton.Text = "-";
+            this.collapseButton.UseVisualStyleBackColor = true;
+            this.collapseButton.Click += new System.EventHandler(this.CollapseButton_Click);
             // 
             // folderBox
             // 
@@ -127,6 +129,6 @@ namespace ImageToolbox
         private System.Windows.Forms.FlowLayoutPanel folderRowPanel;
         private System.Windows.Forms.PictureBox folderBox;
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button collapseButton;
     }
 }

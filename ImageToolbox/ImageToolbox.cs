@@ -44,9 +44,6 @@ namespace ImageToolbox
                 else if (layer.IsFolderEnd)
                 {
                     LayerFolderPanel folder = currentFolder.Pop();
-                    //folder.Dock = DockStyle.Fill;
-                    //layersPanel.Controls.Add(folder);
-                    //break;
                     currentFolder.Peek().AddLayer(folder);
                 }
                 else
