@@ -100,9 +100,10 @@ namespace ImageToolbox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layersPanel.AutoScroll = true;
             this.layersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.layersPanel.Location = new System.Drawing.Point(10, 264);
+            this.layersPanel.Location = new System.Drawing.Point(10, 260);
             this.layersPanel.Name = "layersPanel";
-            this.layersPanel.Size = new System.Drawing.Size(764, 318);
+            this.layersPanel.Padding = new System.Windows.Forms.Padding(10);
+            this.layersPanel.Size = new System.Drawing.Size(764, 322);
             this.layersPanel.TabIndex = 6;
             // 
             // ImageToolbox

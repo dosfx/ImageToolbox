@@ -12,6 +12,8 @@ namespace ImageToolbox
 {
     public partial class ImageToolbox : Form
     {
+        private const int FolderIndent = 30;
+
         private PsdFile psdFile;
 
         public ImageToolbox()
@@ -30,35 +32,37 @@ namespace ImageToolbox
             psdFile = new PsdFile(path);
             pathLabel.Text = path;
             mainPictureBox.Image = psdFile.Bitmap;
-            Stack<LayerFolderPanel> currentFolder = new Stack<LayerFolderPanel>();
-            currentFolder.Push(new LayerFolderPanel() { FolderName = "Root" });
+            int column = 0;
             foreach (PsdLayer layer in psdFile.Layers.Reverse())
             {
+                Control row;
                 if (layer.IsFolderBegin)
                 {
-                    currentFolder.Push(new LayerFolderPanel()
+                    row = new LayerFolderPanel()
                     {
-                        FolderName = layer.Name
-                    });
+                        Dock = DockStyle.Top,
+                        FolderName = layer.Name,
+                        Padding = new Padding(column * FolderIndent, 0, 0, 10)
+                    };
+                    column++;
                 }
                 else if (layer.IsFolderEnd)
                 {
-                    LayerFolderPanel folder = currentFolder.Pop();
-                    currentFolder.Peek().AddLayer(folder);
+                    column--;
+                    continue;
                 }
                 else
                 {
-                    currentFolder.Peek().AddLayer(new LayerPanel()
+                    row = new LayerPanel()
                     {
-                        Image = layer.GetBitmap(),
-                        LayerName = layer.Name
-                    });
+                        Dock = DockStyle.Top,
+                        LayerName = layer.Name,
+                        Padding = new Padding(column * FolderIndent, 0, 0, 10)
+                    };
                 }
+                layersPanel.Controls.Add(row);
+                layersPanel.Controls.SetChildIndex(row, 0);
             }
-            LayerFolderPanel root = currentFolder.Pop();
-            root.Dock = DockStyle.Top;
-            root.IsRoot = true;
-            layersPanel.Controls.Add(root);
         }
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)
