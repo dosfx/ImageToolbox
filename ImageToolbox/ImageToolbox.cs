@@ -38,12 +38,14 @@ namespace ImageToolbox
                 Control row;
                 if (layer.IsFolderBegin)
                 {
-                    row = new LayerFolderPanel()
+                    LayerFolderPanel folder = new LayerFolderPanel()
                     {
                         Dock = DockStyle.Top,
                         FolderName = layer.Name,
                         Padding = new Padding(column * FolderIndent, 0, 0, 10)
                     };
+                    folder.IsOpenChanged += LayerFolder_IsOpenChanged;
+                    row = folder;
                     column++;
                 }
                 else if (layer.IsFolderEnd)
@@ -63,6 +65,36 @@ namespace ImageToolbox
                 layersPanel.Controls.Add(row);
                 layersPanel.Controls.SetChildIndex(row, 0);
             }
+        }
+
+        private void LayerFolder_IsOpenChanged(object sender, EventArgs e)
+        {
+            layersPanel.SuspendLayout();
+            Stack<LayerFolderPanel> folderStack = new Stack<LayerFolderPanel>();
+            LayerFolderPanel changingFolder = (LayerFolderPanel)sender;
+            folderStack.Push(changingFolder);
+            for (int i = layersPanel.Controls.GetChildIndex(changingFolder) - 1; i >= 0; i--)
+            {
+                Control row = layersPanel.Controls[i];
+                int indentDiff = (row.Padding.Left - folderStack.Peek().Padding.Left) / FolderIndent;
+                if (indentDiff <= 0)
+                {
+                    for (int p = 0; p >= indentDiff && folderStack.Count > 0; p--)
+                    {
+                        folderStack.Pop();
+                    }
+                    if (folderStack.Count == 0)
+                    {
+                        break;
+                    }
+                }
+                row.Visible = changingFolder.IsOpen && folderStack.Peek().IsOpen;
+                if (row is LayerFolderPanel folder)
+                {
+                    folderStack.Push(folder);
+                }
+            }
+            layersPanel.ResumeLayout(true);
         }
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)

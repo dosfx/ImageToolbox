@@ -60,6 +60,7 @@ namespace ImageToolbox
             this.collapseButton.TabIndex = 2;
             this.collapseButton.Text = "-";
             this.collapseButton.UseVisualStyleBackColor = true;
+            this.collapseButton.Click += new System.EventHandler(this.CollapseButton_Click);
             // 
             // folderBox
             // 
