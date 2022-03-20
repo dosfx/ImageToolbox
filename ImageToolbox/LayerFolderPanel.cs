@@ -29,6 +29,12 @@ namespace ImageToolbox
             set => nameLabel.Text = value;
         }
 
+        public bool IsHidden
+        {
+            get => hiddenLabel.Text == LayerPanel.HiddenText;
+            set => hiddenLabel.Text = value ? LayerPanel.HiddenText : LayerPanel.VisibleText;
+        }
+
         public bool IsOpen
         {
             get => collapseButton.Text == OpenButtonText;

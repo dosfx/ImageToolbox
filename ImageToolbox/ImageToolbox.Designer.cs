@@ -36,6 +36,7 @@ namespace ImageToolbox
             this.pathLabel = new System.Windows.Forms.Label();
             this.imagePanel = new System.Windows.Forms.Panel();
             this.layersPanel = new System.Windows.Forms.Panel();
+            this.sizeLabel = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.imagePanel.SuspendLayout();
@@ -86,6 +87,7 @@ namespace ImageToolbox
             this.imagePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.imagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.imagePanel.Controls.Add(this.sizeLabel);
             this.imagePanel.Controls.Add(this.mainPictureBox);
             this.imagePanel.Controls.Add(this.pathLabel);
             this.imagePanel.Location = new System.Drawing.Point(10, 34);
@@ -105,6 +107,14 @@ namespace ImageToolbox
             this.layersPanel.Padding = new System.Windows.Forms.Padding(10);
             this.layersPanel.Size = new System.Drawing.Size(764, 322);
             this.layersPanel.TabIndex = 6;
+            // 
+            // sizeLabel
+            // 
+            this.sizeLabel.AutoSize = true;
+            this.sizeLabel.Location = new System.Drawing.Point(221, 40);
+            this.sizeLabel.Name = "sizeLabel";
+            this.sizeLabel.Size = new System.Drawing.Size(0, 13);
+            this.sizeLabel.TabIndex = 5;
             // 
             // ImageToolbox
             // 
@@ -137,6 +147,7 @@ namespace ImageToolbox
         private System.Windows.Forms.Label pathLabel;
         private System.Windows.Forms.Panel imagePanel;
         private System.Windows.Forms.Panel layersPanel;
+        private System.Windows.Forms.Label sizeLabel;
     }
 }
 

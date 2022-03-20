@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -35,6 +36,21 @@ namespace ImageToolbox
                 extraLength;
             int maskLength = reader.ReadInt32();
             extraLength -= maskLength + 4;
+            if (maskLength > 0)
+            {
+                MaskBounds = reader.ReadRectangle();
+                maskLength -= 16;
+                byte color = reader.ReadByte();
+                maskLength -= 1;
+                MaskColor = Color.FromArgb(color, color, color);
+                MaskFlags = (PsdMaskFlags)reader.ReadByte();
+                maskLength -= 1;
+                if (maskLength == 2)
+                {
+                    Check.NullPadding(reader, 2);
+                    maskLength -= 2;
+                }
+            }
             Check.Equals(nameof(maskLength), maskLength, 0);
             int blendLength = reader.ReadInt32();
             extraLength -= blendLength + 4;
@@ -62,12 +78,17 @@ namespace ImageToolbox
         public bool Clipping { get; private set; }
         public PsdLayerFlags Flags { get; private set; }
         public string Name { get; private set; }
+        public Rectangle MaskBounds { get; private set; }
+        public Color MaskColor { get; private set; }
+        public PsdMaskFlags MaskFlags { get; private set; }
         public PsdLayerInfo[] AdditionalInfo { get; private set; }
 
         public int DataLength { get; private set; }
 
         public PsdLayerInfo.SectionDivider.Type? DividerType => 
             AdditionalInfo.OfType<PsdLayerInfo.SectionDivider>().FirstOrDefault()?.DividerType;
+
+        public bool IsHidden => Flags.HasFlag(PsdLayerFlags.Visible); // visble flag present seems to mean invisible *shrugs*
 
         public bool IsFolderBegin =>
             DividerType == PsdLayerInfo.SectionDivider.Type.ClosedFolder ||
@@ -105,7 +126,12 @@ namespace ImageToolbox
         {
             foreach (PsdChannel channel in Channels)
             {
-                channel.ParseChannelData(reader, Bounds.Height);
+                int height = Bounds.Height;
+                if (channel.Id == PsdChannelId.UserSuppliedMask)
+                {
+                    height = MaskBounds.Height;
+                }
+                channel.ParseChannelData(reader, height);
             }
         }
     }

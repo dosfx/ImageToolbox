@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="PsdMaskFlags.cs" />
     <Compile Include="PsdLayerInfo.cs" />
     <Compile Include="LayerFolderPanel.cs">
       <SubType>UserControl</SubType>
@@ -94,6 +95,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

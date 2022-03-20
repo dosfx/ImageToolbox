@@ -24,13 +24,15 @@ namespace ImageToolbox
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\Puggle_200.psd");
+            //OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\Puggle_200.psd");
+            OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\rafi centaur basing cont.psd");
         }
 
         public void OpenFile(string path)
         {
             psdFile = new PsdFile(path);
             pathLabel.Text = path;
+            sizeLabel.Text = $"{psdFile.Width} x {psdFile.Height}";
             mainPictureBox.Image = psdFile.Bitmap;
             int column = 0;
             foreach (PsdLayer layer in psdFile.Layers.Reverse())
@@ -42,6 +44,7 @@ namespace ImageToolbox
                     {
                         Dock = DockStyle.Top,
                         FolderName = layer.Name,
+                        IsHidden = layer.IsHidden,
                         Padding = new Padding(column * FolderIndent, 0, 0, 10)
                     };
                     folder.IsOpenChanged += LayerFolder_IsOpenChanged;
@@ -55,16 +58,64 @@ namespace ImageToolbox
                 }
                 else
                 {
+                    Bitmap layerImage = layer.GetBitmap();
+                    CountPixels(layerImage, out int totalPixels, out double weightedPixels, out int transparent, out double average);
                     row = new LayerPanel()
                     {
                         Dock = DockStyle.Top,
+                        Image = GetLayerImage(layer, layerImage),
+                        IsHidden = layer.IsHidden,
                         LayerName = layer.Name,
-                        Padding = new Padding(column * FolderIndent, 0, 0, 10)
+                        Padding = new Padding(column * FolderIndent, 0, 0, 10),
+                        LayerOpacity = (layer.Opacity / 255d) * 100,
+                        TotalPixels = totalPixels,
+                        WeightedPixels = weightedPixels,
+                        FullyTransparentPixels = transparent,
+                        AverageTransparency = average
                     };
                 }
                 layersPanel.Controls.Add(row);
                 layersPanel.Controls.SetChildIndex(row, 0);
             }
+        }
+
+        private Image GetLayerImage(PsdLayer layer, Image layerImage)
+        {
+            Image ret = new Bitmap(psdFile.Width, psdFile.Height);
+            using (Graphics g = Graphics.FromImage(ret))
+            {
+                g.FillRectangle(Brushes.Gray, 0, 0, ret.Width, ret.Height);
+                g.DrawImage(layerImage, layer.Bounds);
+            }
+            return ret;
+        }
+
+        private void CountPixels(Bitmap image, out int totalPixels, out double weightedPixels, out int transparent, out double averageTransparency)
+        {
+            weightedPixels = 0;
+            totalPixels = 0;
+            transparent = 0;
+            averageTransparency = 0;
+            for (int x = 0; x < image.Width; x++)
+            {
+                for (int y = 0; y < image.Height; y++)
+                {
+                    Color pixel = image.GetPixel(x, y);
+                    if (pixel.A == 0)
+                    {
+                        transparent++;
+                    }
+                    else
+                    {
+                        averageTransparency += pixel.A / 255d;
+                        totalPixels++;
+                        weightedPixels += pixel.A / 255d;
+                    }
+                }
+            }
+            averageTransparency /= totalPixels;
+            averageTransparency *= 100;
+            transparent += (psdFile.Width * psdFile.Height) - (image.Width * image.Height);
         }
 
         private void LayerFolder_IsOpenChanged(object sender, EventArgs e)

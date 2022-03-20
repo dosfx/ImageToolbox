@@ -33,6 +33,7 @@ namespace ImageToolbox
             this.collapseButton = new System.Windows.Forms.Button();
             this.folderBox = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
+            this.hiddenLabel = new System.Windows.Forms.Label();
             this.folderRowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.folderBox)).BeginInit();
             this.SuspendLayout();
@@ -43,6 +44,7 @@ namespace ImageToolbox
             this.folderRowPanel.Controls.Add(this.collapseButton);
             this.folderRowPanel.Controls.Add(this.folderBox);
             this.folderRowPanel.Controls.Add(this.nameLabel);
+            this.folderRowPanel.Controls.Add(this.hiddenLabel);
             this.folderRowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.folderRowPanel.Location = new System.Drawing.Point(10, 0);
             this.folderRowPanel.Name = "folderRowPanel";
@@ -82,6 +84,19 @@ namespace ImageToolbox
             this.nameLabel.TabIndex = 1;
             this.nameLabel.Text = "Folder Name";
             // 
+            // hiddenLabel
+            // 
+            this.hiddenLabel.AutoSize = true;
+            this.hiddenLabel.BackColor = System.Drawing.Color.SteelBlue;
+            this.hiddenLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hiddenLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.hiddenLabel.Location = new System.Drawing.Point(183, 10);
+            this.hiddenLabel.Name = "hiddenLabel";
+            this.hiddenLabel.Padding = new System.Windows.Forms.Padding(4);
+            this.hiddenLabel.Size = new System.Drawing.Size(51, 23);
+            this.hiddenLabel.TabIndex = 3;
+            this.hiddenLabel.Text = "Hidden";
+            // 
             // LayerFolderPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -103,5 +118,6 @@ namespace ImageToolbox
         private System.Windows.Forms.PictureBox folderBox;
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Button collapseButton;
+        private System.Windows.Forms.Label hiddenLabel;
     }
 }
