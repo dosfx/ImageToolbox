@@ -13,8 +13,6 @@ namespace ImageToolbox
 {
     public partial class ImageToolbox : Form
     {
-        private const int FolderIndent = 30;
-
         private PsdFile psdFile;
 
         public ImageToolbox()
@@ -68,13 +66,13 @@ namespace ImageToolbox
             pathLabel.Text = (string)pathLabel.Tag;
             sizeLabel.Text = $"{psdFile.Width} x {psdFile.Height}";
             mainPictureBox.Image = psdFile.Bitmap;
-            int column = 0;
             layersPanel.SuspendLayout();
             layersPanel.Visible = false;
             Stack<LayerFolderPanel> folderStack = new Stack<LayerFolderPanel>();
             foreach (PsdLayer layer in psdFile.Layers.Reverse())
             {
                 Control row;
+                Control.ControlCollection currentLevel = folderStack.Count == 0 ? layersPanel.Controls : folderStack.Peek().LayerControls;
                 if (layer.IsFolderBegin)
                 {
                     LayerFolderPanel folder = new LayerFolderPanel()
@@ -82,17 +80,14 @@ namespace ImageToolbox
                         Dock = DockStyle.Top,
                         FolderName = layer.Name,
                         IsHidden = layer.IsHidden,
-                        Padding = new Padding(column * FolderIndent, 0, 0, 10)
+                        IsOpen = layer.IsOpen
                     };
-                    folder.IsOpenChanged += LayerFolder_IsOpenChanged;
                     folderStack.Push(folder);
                     row = folder;
-                    column++;
                 }
                 else if (layer.IsFolderEnd)
                 {
                     folderStack.Pop();
-                    column--;
                     continue;
                 }
                 else
@@ -105,7 +100,6 @@ namespace ImageToolbox
                         //Image = GetLayerImage(layer, layerImage),
                         IsHidden = layer.IsHidden,
                         LayerName = layer.Name,
-                        Padding = new Padding(column * FolderIndent, 0, 0, 10),
                         LayerOpacity = (layer.Opacity / 255d) * 100,
                         Tag = layer,
                         //TotalPixels = totalPixels,
@@ -114,10 +108,10 @@ namespace ImageToolbox
                         //AverageTransparency = average
                     };
                 }
-                layersPanel.Controls.Add(row);
-                layersPanel.Controls.SetChildIndex(row, 0);
+                currentLevel.Add(row);
+                currentLevel.SetChildIndex(row, 0);
             }
-            layersPanel.ResumeLayout(true);
+            layersPanel.ResumeLayout();
             layersPanel.Visible = true;
         }
 
@@ -158,36 +152,6 @@ namespace ImageToolbox
             averageTransparency /= totalPixels;
             averageTransparency *= 100;
             transparent += (psdFile.Width * psdFile.Height) - (image.Width * image.Height);
-        }
-
-        private void LayerFolder_IsOpenChanged(object sender, EventArgs e)
-        {
-            layersPanel.SuspendLayout();
-            Stack<LayerFolderPanel> folderStack = new Stack<LayerFolderPanel>();
-            LayerFolderPanel changingFolder = (LayerFolderPanel)sender;
-            folderStack.Push(changingFolder);
-            for (int i = layersPanel.Controls.GetChildIndex(changingFolder) - 1; i >= 0; i--)
-            {
-                Control row = layersPanel.Controls[i];
-                int indentDiff = (row.Padding.Left - folderStack.Peek().Padding.Left) / FolderIndent;
-                if (indentDiff <= 0)
-                {
-                    for (int p = 0; p >= indentDiff && folderStack.Count > 0; p--)
-                    {
-                        folderStack.Pop();
-                    }
-                    if (folderStack.Count == 0)
-                    {
-                        break;
-                    }
-                }
-                row.Visible = changingFolder.IsOpen && folderStack.Peek().IsOpen;
-                if (row is LayerFolderPanel folder)
-                {
-                    folderStack.Push(folder);
-                }
-            }
-            layersPanel.ResumeLayout(true);
         }
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)

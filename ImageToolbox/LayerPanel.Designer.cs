@@ -79,7 +79,7 @@ namespace ImageToolbox
             this.displayPanel.Location = new System.Drawing.Point(101, 30);
             this.displayPanel.Name = "displayPanel";
             this.displayPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.displayPanel.Size = new System.Drawing.Size(619, 70);
+            this.displayPanel.Size = new System.Drawing.Size(629, 70);
             this.displayPanel.TabIndex = 2;
             // 
             // hiddenLabel
@@ -163,9 +163,9 @@ namespace ImageToolbox
             this.panel1.Controls.Add(this.extraBorder);
             this.panel1.Controls.Add(this.imageBox);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(10, 0);
+            this.panel1.Location = new System.Drawing.Point(0, 10);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(722, 102);
+            this.panel1.Size = new System.Drawing.Size(732, 102);
             this.panel1.TabIndex = 3;
             // 
             // extraBorder
@@ -184,7 +184,7 @@ namespace ImageToolbox
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Name = "LayerPanel";
-            this.Padding = new System.Windows.Forms.Padding(10, 0, 0, 10);
+            this.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
             this.Size = new System.Drawing.Size(732, 112);
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).EndInit();
             this.displayPanel.ResumeLayout(false);

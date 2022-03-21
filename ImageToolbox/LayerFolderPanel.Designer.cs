@@ -34,6 +34,7 @@ namespace ImageToolbox
             this.folderBox = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
             this.hiddenLabel = new System.Windows.Forms.Label();
+            this.layersPanel = new System.Windows.Forms.Panel();
             this.folderRowPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.folderBox)).BeginInit();
             this.SuspendLayout();
@@ -45,11 +46,11 @@ namespace ImageToolbox
             this.folderRowPanel.Controls.Add(this.folderBox);
             this.folderRowPanel.Controls.Add(this.nameLabel);
             this.folderRowPanel.Controls.Add(this.hiddenLabel);
-            this.folderRowPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.folderRowPanel.Location = new System.Drawing.Point(10, 0);
+            this.folderRowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.folderRowPanel.Location = new System.Drawing.Point(0, 10);
             this.folderRowPanel.Name = "folderRowPanel";
             this.folderRowPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.folderRowPanel.Size = new System.Drawing.Size(684, 44);
+            this.folderRowPanel.Size = new System.Drawing.Size(500, 44);
             this.folderRowPanel.TabIndex = 0;
             this.folderRowPanel.WrapContents = false;
             // 
@@ -97,19 +98,34 @@ namespace ImageToolbox
             this.hiddenLabel.TabIndex = 3;
             this.hiddenLabel.Text = "Hidden";
             // 
+            // layersPanel
+            // 
+            this.layersPanel.AutoSize = true;
+            this.layersPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.layersPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.layersPanel.Location = new System.Drawing.Point(0, 54);
+            this.layersPanel.Name = "layersPanel";
+            this.layersPanel.Padding = new System.Windows.Forms.Padding(30, 0, 0, 0);
+            this.layersPanel.Size = new System.Drawing.Size(500, 0);
+            this.layersPanel.TabIndex = 1;
+            // 
             // LayerFolderPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.Controls.Add(this.layersPanel);
             this.Controls.Add(this.folderRowPanel);
-            this.MinimumSize = new System.Drawing.Size(0, 40);
+            this.MinimumSize = new System.Drawing.Size(500, 40);
             this.Name = "LayerFolderPanel";
-            this.Padding = new System.Windows.Forms.Padding(10, 0, 0, 10);
-            this.Size = new System.Drawing.Size(694, 54);
+            this.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this.Size = new System.Drawing.Size(500, 54);
             this.folderRowPanel.ResumeLayout(false);
             this.folderRowPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.folderBox)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -119,5 +135,6 @@ namespace ImageToolbox
         private System.Windows.Forms.Label nameLabel;
         private System.Windows.Forms.Button collapseButton;
         private System.Windows.Forms.Label hiddenLabel;
+        private System.Windows.Forms.Panel layersPanel;
     }
 }

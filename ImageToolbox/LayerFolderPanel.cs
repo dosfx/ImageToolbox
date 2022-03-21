@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImageToolbox
@@ -19,9 +12,8 @@ namespace ImageToolbox
         {
             InitializeComponent();
             collapseButton.Text = OpenButtonText;
+            DoubleBuffered = true;
         }
-
-        public event EventHandler IsOpenChanged;
 
         public string FolderName
         {
@@ -41,9 +33,13 @@ namespace ImageToolbox
             set
             {
                 collapseButton.Text = value ? OpenButtonText : ClosedButtonText;
-                IsOpenChanged?.Invoke(this, EventArgs.Empty);
+                SuspendLayout();
+                layersPanel.Visible = IsOpen;
+                ResumeLayout();
             }
         }
+
+        public ControlCollection LayerControls => layersPanel.Controls;
 
         private void CollapseButton_Click(object sender, EventArgs e)
         {
