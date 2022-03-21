@@ -35,8 +35,10 @@ namespace ImageToolbox
             this.mainPictureBox = new System.Windows.Forms.PictureBox();
             this.pathLabel = new System.Windows.Forms.Label();
             this.imagePanel = new System.Windows.Forms.Panel();
-            this.layersPanel = new System.Windows.Forms.Panel();
+            this.openFileProgressBar = new System.Windows.Forms.ProgressBar();
             this.sizeLabel = new System.Windows.Forms.Label();
+            this.layersPanel = new System.Windows.Forms.Panel();
+            this.openFileWorker = new System.ComponentModel.BackgroundWorker();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.imagePanel.SuspendLayout();
@@ -87,6 +89,7 @@ namespace ImageToolbox
             this.imagePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.imagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.imagePanel.Controls.Add(this.openFileProgressBar);
             this.imagePanel.Controls.Add(this.sizeLabel);
             this.imagePanel.Controls.Add(this.mainPictureBox);
             this.imagePanel.Controls.Add(this.pathLabel);
@@ -94,6 +97,24 @@ namespace ImageToolbox
             this.imagePanel.Name = "imagePanel";
             this.imagePanel.Size = new System.Drawing.Size(764, 220);
             this.imagePanel.TabIndex = 5;
+            // 
+            // openFileProgressBar
+            // 
+            this.openFileProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.openFileProgressBar.Location = new System.Drawing.Point(216, 187);
+            this.openFileProgressBar.Name = "openFileProgressBar";
+            this.openFileProgressBar.Size = new System.Drawing.Size(543, 23);
+            this.openFileProgressBar.TabIndex = 6;
+            this.openFileProgressBar.Visible = false;
+            // 
+            // sizeLabel
+            // 
+            this.sizeLabel.AutoSize = true;
+            this.sizeLabel.Location = new System.Drawing.Point(221, 40);
+            this.sizeLabel.Name = "sizeLabel";
+            this.sizeLabel.Size = new System.Drawing.Size(0, 13);
+            this.sizeLabel.TabIndex = 5;
             // 
             // layersPanel
             // 
@@ -108,13 +129,12 @@ namespace ImageToolbox
             this.layersPanel.Size = new System.Drawing.Size(764, 322);
             this.layersPanel.TabIndex = 6;
             // 
-            // sizeLabel
+            // openFileWorker
             // 
-            this.sizeLabel.AutoSize = true;
-            this.sizeLabel.Location = new System.Drawing.Point(221, 40);
-            this.sizeLabel.Name = "sizeLabel";
-            this.sizeLabel.Size = new System.Drawing.Size(0, 13);
-            this.sizeLabel.TabIndex = 5;
+            this.openFileWorker.WorkerReportsProgress = true;
+            this.openFileWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.OpenFileWorker_DoWork);
+            this.openFileWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.OpenFileWorker_ProgressChanged);
+            this.openFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.OpenFileWorker_RunWorkerCompleted);
             // 
             // ImageToolbox
             // 
@@ -148,6 +168,8 @@ namespace ImageToolbox
         private System.Windows.Forms.Panel imagePanel;
         private System.Windows.Forms.Panel layersPanel;
         private System.Windows.Forms.Label sizeLabel;
+        private System.Windows.Forms.ProgressBar openFileProgressBar;
+        private System.ComponentModel.BackgroundWorker openFileWorker;
     }
 }
 

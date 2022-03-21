@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="ProgressEventArgs.cs" />
+    <Compile Include="ProgressStream.cs" />
     <Compile Include="PsdMaskFlags.cs" />
     <Compile Include="PsdLayerInfo.cs" />
     <Compile Include="LayerFolderPanel.cs">

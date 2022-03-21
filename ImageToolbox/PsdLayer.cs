@@ -96,6 +96,10 @@ namespace ImageToolbox
 
         public bool IsFolderEnd => DividerType == PsdLayerInfo.SectionDivider.Type.BoundingSection;
 
+        public bool IsOpen => DividerType == PsdLayerInfo.SectionDivider.Type.OpenFolder;
+
+        public bool IsClosed => DividerType == PsdLayerInfo.SectionDivider.Type.ClosedFolder;
+
         public Bitmap GetBitmap()
         {
             if (bitmap == null)

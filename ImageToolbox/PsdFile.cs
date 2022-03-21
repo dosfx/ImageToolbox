@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,9 +8,8 @@ namespace ImageToolbox
 {
     class PsdFile
     {
-        public PsdFile(string path)
+        public PsdFile(Stream stream)
         {
-            using (Stream stream = File.OpenRead(path))
             using (PsdBinaryReader reader = new PsdBinaryReader(stream))
             {
                 ParseHeader(reader);

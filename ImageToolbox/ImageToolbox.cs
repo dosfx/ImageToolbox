@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,16 +26,52 @@ namespace ImageToolbox
         {
             base.OnLoad(e);
             //OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\Puggle_200.psd");
-            OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\rafi centaur basing cont.psd");
+            //OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\rafi centaur basing cont.psd");
         }
 
-        public void OpenFile(string path)
+        private void OpenFile(string path)
         {
-            psdFile = new PsdFile(path);
-            pathLabel.Text = path;
+            layersPanel.Controls.Clear();
+            pathLabel.Text = "Loading...";
+            pathLabel.Tag = path;
+            sizeLabel.Text = string.Empty;
+            openFileProgressBar.Value = 0;
+            openFileProgressBar.Visible = true;
+            openFileWorker.RunWorkerAsync(path);
+        }
+
+        private void OpenFileWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string path = (string)e.Argument;
+            using (Stream fileStream = File.OpenRead(path))
+            using (ProgressStream stream = new ProgressStream(fileStream))
+            {
+                stream.ProgressChanged += OpenFileStream_ProgressChanged;
+                e.Result = new PsdFile(stream);
+            }
+        }
+
+        private void OpenFileStream_ProgressChanged(object sender, ProgressEventArgs e)
+        {
+            openFileWorker.ReportProgress(e.Percentage);
+        }
+
+        private void OpenFileWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            openFileProgressBar.Value = e.ProgressPercentage;
+        }
+
+        private void OpenFileWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            openFileProgressBar.Visible = false;
+            psdFile = (PsdFile)e.Result;
+            pathLabel.Text = (string)pathLabel.Tag;
             sizeLabel.Text = $"{psdFile.Width} x {psdFile.Height}";
             mainPictureBox.Image = psdFile.Bitmap;
             int column = 0;
+            layersPanel.SuspendLayout();
+            layersPanel.Visible = false;
+            Stack<LayerFolderPanel> folderStack = new Stack<LayerFolderPanel>();
             foreach (PsdLayer layer in psdFile.Layers.Reverse())
             {
                 Control row;
@@ -48,35 +85,40 @@ namespace ImageToolbox
                         Padding = new Padding(column * FolderIndent, 0, 0, 10)
                     };
                     folder.IsOpenChanged += LayerFolder_IsOpenChanged;
+                    folderStack.Push(folder);
                     row = folder;
                     column++;
                 }
                 else if (layer.IsFolderEnd)
                 {
+                    folderStack.Pop();
                     column--;
                     continue;
                 }
                 else
                 {
-                    Bitmap layerImage = layer.GetBitmap();
-                    CountPixels(layerImage, out int totalPixels, out double weightedPixels, out int transparent, out double average);
+                    //Bitmap layerImage = layer.GetBitmap();
+                    //CountPixels(layerImage, out int totalPixels, out double weightedPixels, out int transparent, out double average);
                     row = new LayerPanel()
                     {
                         Dock = DockStyle.Top,
-                        Image = GetLayerImage(layer, layerImage),
+                        //Image = GetLayerImage(layer, layerImage),
                         IsHidden = layer.IsHidden,
                         LayerName = layer.Name,
                         Padding = new Padding(column * FolderIndent, 0, 0, 10),
                         LayerOpacity = (layer.Opacity / 255d) * 100,
-                        TotalPixels = totalPixels,
-                        WeightedPixels = weightedPixels,
-                        FullyTransparentPixels = transparent,
-                        AverageTransparency = average
+                        Tag = layer,
+                        //TotalPixels = totalPixels,
+                        //WeightedPixels = weightedPixels,
+                        //FullyTransparentPixels = transparent,
+                        //AverageTransparency = average
                     };
                 }
                 layersPanel.Controls.Add(row);
                 layersPanel.Controls.SetChildIndex(row, 0);
             }
+            layersPanel.ResumeLayout(true);
+            layersPanel.Visible = true;
         }
 
         private Image GetLayerImage(PsdLayer layer, Image layerImage)

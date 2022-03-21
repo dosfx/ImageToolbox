@@ -33,13 +33,13 @@ namespace ImageToolbox
             this.nameLabel = new System.Windows.Forms.Label();
             this.displayPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.hiddenLabel = new System.Windows.Forms.Label();
+            this.opacityLabel = new System.Windows.Forms.Label();
             this.totalLabel = new System.Windows.Forms.Label();
             this.weightedLabel = new System.Windows.Forms.Label();
             this.transparentLabel = new System.Windows.Forms.Label();
             this.averageLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.extraBorder = new System.Windows.Forms.Label();
-            this.opacityLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
             this.displayPanel.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -94,6 +94,18 @@ namespace ImageToolbox
             this.hiddenLabel.Size = new System.Drawing.Size(51, 23);
             this.hiddenLabel.TabIndex = 0;
             this.hiddenLabel.Text = "Hidden";
+            // 
+            // opacityLabel
+            // 
+            this.opacityLabel.AutoSize = true;
+            this.opacityLabel.BackColor = System.Drawing.Color.SteelBlue;
+            this.opacityLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.opacityLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.opacityLabel.Location = new System.Drawing.Point(70, 10);
+            this.opacityLabel.Name = "opacityLabel";
+            this.opacityLabel.Padding = new System.Windows.Forms.Padding(4);
+            this.opacityLabel.Size = new System.Drawing.Size(10, 23);
+            this.opacityLabel.TabIndex = 5;
             // 
             // totalLabel
             // 
@@ -165,18 +177,6 @@ namespace ImageToolbox
             this.extraBorder.Size = new System.Drawing.Size(1, 100);
             this.extraBorder.TabIndex = 3;
             this.extraBorder.Text = "label1";
-            // 
-            // opacityLabel
-            // 
-            this.opacityLabel.AutoSize = true;
-            this.opacityLabel.BackColor = System.Drawing.Color.SteelBlue;
-            this.opacityLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.opacityLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.opacityLabel.Location = new System.Drawing.Point(70, 10);
-            this.opacityLabel.Name = "opacityLabel";
-            this.opacityLabel.Padding = new System.Windows.Forms.Padding(4);
-            this.opacityLabel.Size = new System.Drawing.Size(10, 23);
-            this.opacityLabel.TabIndex = 5;
             // 
             // LayerPanel
             // 
