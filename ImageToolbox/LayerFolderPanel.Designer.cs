@@ -30,7 +30,6 @@ namespace ImageToolbox
         private void InitializeComponent()
         {
             this.folderRowPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.collapseButton = new System.Windows.Forms.Button();
             this.folderBox = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
             this.hiddenLabel = new System.Windows.Forms.Label();
@@ -42,7 +41,6 @@ namespace ImageToolbox
             // folderRowPanel
             // 
             this.folderRowPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.folderRowPanel.Controls.Add(this.collapseButton);
             this.folderRowPanel.Controls.Add(this.folderBox);
             this.folderRowPanel.Controls.Add(this.nameLabel);
             this.folderRowPanel.Controls.Add(this.hiddenLabel);
@@ -54,31 +52,21 @@ namespace ImageToolbox
             this.folderRowPanel.TabIndex = 0;
             this.folderRowPanel.WrapContents = false;
             // 
-            // collapseButton
-            // 
-            this.collapseButton.Location = new System.Drawing.Point(10, 10);
-            this.collapseButton.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.collapseButton.Name = "collapseButton";
-            this.collapseButton.Size = new System.Drawing.Size(20, 20);
-            this.collapseButton.TabIndex = 2;
-            this.collapseButton.Text = "-";
-            this.collapseButton.UseVisualStyleBackColor = true;
-            this.collapseButton.Click += new System.EventHandler(this.CollapseButton_Click);
-            // 
             // folderBox
             // 
-            this.folderBox.Location = new System.Drawing.Point(40, 10);
+            this.folderBox.Location = new System.Drawing.Point(10, 10);
             this.folderBox.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.folderBox.Name = "folderBox";
             this.folderBox.Size = new System.Drawing.Size(20, 20);
             this.folderBox.TabIndex = 0;
             this.folderBox.TabStop = false;
+            this.folderBox.Click += new System.EventHandler(this.FolderBox_Click);
             // 
             // nameLabel
             // 
             this.nameLabel.AutoSize = true;
             this.nameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameLabel.Location = new System.Drawing.Point(70, 10);
+            this.nameLabel.Location = new System.Drawing.Point(40, 10);
             this.nameLabel.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.nameLabel.Name = "nameLabel";
             this.nameLabel.Size = new System.Drawing.Size(100, 20);
@@ -91,7 +79,7 @@ namespace ImageToolbox
             this.hiddenLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.hiddenLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hiddenLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.hiddenLabel.Location = new System.Drawing.Point(183, 10);
+            this.hiddenLabel.Location = new System.Drawing.Point(153, 10);
             this.hiddenLabel.Name = "hiddenLabel";
             this.hiddenLabel.Padding = new System.Windows.Forms.Padding(4);
             this.hiddenLabel.Size = new System.Drawing.Size(51, 23);
@@ -133,7 +121,6 @@ namespace ImageToolbox
         private System.Windows.Forms.FlowLayoutPanel folderRowPanel;
         private System.Windows.Forms.PictureBox folderBox;
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.Button collapseButton;
         private System.Windows.Forms.Label hiddenLabel;
         private System.Windows.Forms.Panel layersPanel;
     }

@@ -5,13 +5,10 @@ namespace ImageToolbox
 {
     partial class LayerFolderPanel : UserControl
     {
-        private const string OpenButtonText = "-";
-        private const string ClosedButtonText = "+";
 
         public LayerFolderPanel()
         {
             InitializeComponent();
-            collapseButton.Text = OpenButtonText;
             DoubleBuffered = true;
         }
 
@@ -27,12 +24,14 @@ namespace ImageToolbox
             set => hiddenLabel.Text = value ? LayerPanel.HiddenText : LayerPanel.VisibleText;
         }
 
+        private bool _isOpen;
         public bool IsOpen
         {
-            get => collapseButton.Text == OpenButtonText;
+            get => _isOpen;
             set
             {
-                collapseButton.Text = value ? OpenButtonText : ClosedButtonText;
+                _isOpen = value;
+                folderBox.Image = value ? Properties.Resources.FolderMinusSolid : Properties.Resources.FolderPlusSolid;
                 SuspendLayout();
                 layersPanel.Visible = IsOpen;
                 ResumeLayout();
@@ -41,7 +40,7 @@ namespace ImageToolbox
 
         public ControlCollection LayerControls => layersPanel.Controls;
 
-        private void CollapseButton_Click(object sender, EventArgs e)
+        private void FolderBox_Click(object sender, EventArgs e)
         {
             IsOpen = !IsOpen;
         }
