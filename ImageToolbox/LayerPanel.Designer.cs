@@ -89,7 +89,8 @@ namespace ImageToolbox
             this.hiddenLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.hiddenLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.hiddenLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.hiddenLabel.Location = new System.Drawing.Point(13, 10);
+            this.hiddenLabel.Location = new System.Drawing.Point(13, 13);
+            this.hiddenLabel.Margin = new System.Windows.Forms.Padding(3);
             this.hiddenLabel.Name = "hiddenLabel";
             this.hiddenLabel.Padding = new System.Windows.Forms.Padding(4);
             this.hiddenLabel.Size = new System.Drawing.Size(51, 23);
@@ -102,7 +103,8 @@ namespace ImageToolbox
             this.opacityLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.opacityLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.opacityLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.opacityLabel.Location = new System.Drawing.Point(70, 10);
+            this.opacityLabel.Location = new System.Drawing.Point(70, 13);
+            this.opacityLabel.Margin = new System.Windows.Forms.Padding(3);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Padding = new System.Windows.Forms.Padding(4);
             this.opacityLabel.Size = new System.Drawing.Size(10, 23);
@@ -114,7 +116,8 @@ namespace ImageToolbox
             this.totalLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.totalLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.totalLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.totalLabel.Location = new System.Drawing.Point(86, 10);
+            this.totalLabel.Location = new System.Drawing.Point(86, 13);
+            this.totalLabel.Margin = new System.Windows.Forms.Padding(3);
             this.totalLabel.Name = "totalLabel";
             this.totalLabel.Padding = new System.Windows.Forms.Padding(4);
             this.totalLabel.Size = new System.Drawing.Size(10, 23);
@@ -126,7 +129,8 @@ namespace ImageToolbox
             this.weightedLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.weightedLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.weightedLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.weightedLabel.Location = new System.Drawing.Point(102, 10);
+            this.weightedLabel.Location = new System.Drawing.Point(102, 13);
+            this.weightedLabel.Margin = new System.Windows.Forms.Padding(3);
             this.weightedLabel.Name = "weightedLabel";
             this.weightedLabel.Padding = new System.Windows.Forms.Padding(4);
             this.weightedLabel.Size = new System.Drawing.Size(10, 23);
@@ -138,7 +142,8 @@ namespace ImageToolbox
             this.transparentLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.transparentLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.transparentLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.transparentLabel.Location = new System.Drawing.Point(118, 10);
+            this.transparentLabel.Location = new System.Drawing.Point(118, 13);
+            this.transparentLabel.Margin = new System.Windows.Forms.Padding(3);
             this.transparentLabel.Name = "transparentLabel";
             this.transparentLabel.Padding = new System.Windows.Forms.Padding(4);
             this.transparentLabel.Size = new System.Drawing.Size(10, 23);
@@ -150,7 +155,8 @@ namespace ImageToolbox
             this.averageLabel.BackColor = System.Drawing.Color.SteelBlue;
             this.averageLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.averageLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.averageLabel.Location = new System.Drawing.Point(134, 10);
+            this.averageLabel.Location = new System.Drawing.Point(134, 13);
+            this.averageLabel.Margin = new System.Windows.Forms.Padding(3);
             this.averageLabel.Name = "averageLabel";
             this.averageLabel.Padding = new System.Windows.Forms.Padding(4);
             this.averageLabel.Size = new System.Drawing.Size(10, 23);
