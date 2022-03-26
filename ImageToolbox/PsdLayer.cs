@@ -54,6 +54,8 @@ namespace ImageToolbox
             Check.Equals(nameof(maskLength), maskLength, 0);
             int blendLength = reader.ReadInt32();
             extraLength -= blendLength + 4;
+            BlendData = reader.ReadBytes(blendLength);
+            blendLength -= blendLength;
             Check.Equals(nameof(blendLength), blendLength, 0);
             Name = reader.ReadPascalString();
             int namePad = (4 - (Name.Length + 1) % 4) % 4;
@@ -81,6 +83,7 @@ namespace ImageToolbox
         public Rectangle MaskBounds { get; private set; }
         public Color MaskColor { get; private set; }
         public PsdMaskFlags MaskFlags { get; private set; }
+        public byte[] BlendData { get; private set; }
         public PsdLayerInfo[] AdditionalInfo { get; private set; }
 
         public int DataLength { get; private set; }
