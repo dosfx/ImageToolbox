@@ -50,6 +50,7 @@ namespace ImageToolbox
             // 
             // menuStrip
             // 
+            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openPsdMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
@@ -60,6 +61,7 @@ namespace ImageToolbox
             // 
             // openPsdMenuItem
             // 
+            this.openPsdMenuItem.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.openPsdMenuItem.Name = "openPsdMenuItem";
             this.openPsdMenuItem.Size = new System.Drawing.Size(81, 20);
             this.openPsdMenuItem.Text = "Open PSD...";
@@ -140,11 +142,12 @@ namespace ImageToolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.Window;
+            this.BackColor = System.Drawing.Color.FromArgb(28, 28, 28);
             this.ClientSize = new System.Drawing.Size(784, 592);
             this.Controls.Add(this.layersPanel);
             this.Controls.Add(this.imagePanel);
             this.Controls.Add(this.menuStrip);
+            this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "ImageToolbox";
             this.Text = "Image Toolbox";
