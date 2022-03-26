@@ -40,6 +40,7 @@ namespace ImageToolbox
             this.averageLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.extraBorder = new System.Windows.Forms.Label();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
             this.displayPanel.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -178,6 +179,11 @@ namespace ImageToolbox
             this.extraBorder.TabIndex = 3;
             this.extraBorder.Text = "label1";
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
+            // 
             // LayerPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,5 +214,6 @@ namespace ImageToolbox
         private System.Windows.Forms.Label weightedLabel;
         private System.Windows.Forms.Label averageLabel;
         private System.Windows.Forms.Label opacityLabel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }

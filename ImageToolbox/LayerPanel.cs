@@ -26,26 +26,6 @@ namespace ImageToolbox
             set => opacityLabel.Text = $"{value:.00}% opacity";
         }
 
-        public int TotalPixels
-        {
-            set => totalLabel.Text = $"{value} image pixels";
-        }
-
-        public int FullyTransparentPixels
-        {
-            set => transparentLabel.Text = $"{value} fully transparent pixels";
-        }
-
-        public double WeightedPixels
-        {
-            set => weightedLabel.Text = $"{value:.00} weighted pixels";
-        }
-
-        public double AverageTransparency
-        {
-            set => averageLabel.Text = $"{value:.00}% average transparency";
-        }
-
         public Image Image
         {
             get => imageBox.Image;
@@ -62,6 +42,63 @@ namespace ImageToolbox
         {
             get => nameLabel.Text;
             set => nameLabel.Text = value;
+        }
+
+        public void ProcessLayer(PsdLayer layer, int psdWidth, int psdHeight)
+        {
+            backgroundWorker.RunWorkerAsync(new Tuple<PsdLayer, int, int>(layer, psdWidth, psdHeight));
+        }
+
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Tuple<PsdLayer, int, int> args = (Tuple<PsdLayer, int, int>)e.Argument;
+            PsdLayer layer = args.Item1;
+            int psdWidth = args.Item2;
+            int psdHeight = args.Item3;
+            Image displayImage = new Bitmap(psdWidth, psdHeight);
+            Bitmap layerImage = layer.GetBitmap();
+            using (Graphics g = Graphics.FromImage(displayImage))
+            {
+                g.FillRectangle(Brushes.Gray, 0, 0, displayImage.Width, displayImage.Height);
+                g.DrawImage(layerImage, layer.Bounds);
+            }
+
+            int totalPixels = 0;
+            double weightedPixels = 0;
+            int transparent = 0;
+            double averageTransparency = 0;
+            for (int x = 0; x < layerImage.Width; x++)
+            {
+                for (int y = 0; y < layerImage.Height; y++)
+                {
+                    Color pixel = layerImage.GetPixel(x, y);
+                    if (pixel.A == 0)
+                    {
+                        transparent++;
+                    }
+                    else
+                    {
+                        averageTransparency += pixel.A / 255d;
+                        totalPixels++;
+                        weightedPixels += pixel.A / 255d;
+                    }
+                }
+            }
+            averageTransparency /= totalPixels;
+            averageTransparency *= 100;
+            transparent += (psdWidth * psdHeight) - (layerImage.Width * layerImage.Height);
+        
+            e.Result = new Tuple<Image, int, double, int, double>(displayImage, totalPixels, weightedPixels, transparent, averageTransparency);
+        }
+
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Tuple<Image, int, double, int, double> args = (Tuple<Image, int, double, int, double>)e.Result;
+            imageBox.Image = args.Item1;
+            totalLabel.Text = $"{args.Item2} image pixels";
+            weightedLabel.Text = $"{args.Item3:.00} weighted pixels";
+            transparentLabel.Text = $"{args.Item4} fully transparent pixels";
+            averageLabel.Text = $"{args.Item5:.00}% average transparency";
         }
     }
 }

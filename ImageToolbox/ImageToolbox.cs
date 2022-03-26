@@ -92,66 +92,22 @@ namespace ImageToolbox
                 }
                 else
                 {
-                    //Bitmap layerImage = layer.GetBitmap();
-                    //CountPixels(layerImage, out int totalPixels, out double weightedPixels, out int transparent, out double average);
-                    row = new LayerPanel()
+                    LayerPanel layerPanel = new LayerPanel()
                     {
                         Dock = DockStyle.Top,
-                        //Image = GetLayerImage(layer, layerImage),
                         IsHidden = layer.IsHidden,
                         LayerName = layer.Name,
                         LayerOpacity = (layer.Opacity / 255d) * 100,
                         Tag = layer,
-                        //TotalPixels = totalPixels,
-                        //WeightedPixels = weightedPixels,
-                        //FullyTransparentPixels = transparent,
-                        //AverageTransparency = average
                     };
+                    layerPanel.ProcessLayer(layer, psdFile.Width, psdFile.Height);
+                    row = layerPanel;
                 }
                 currentLevel.Add(row);
                 currentLevel.SetChildIndex(row, 0);
             }
             layersPanel.ResumeLayout();
             layersPanel.Visible = true;
-        }
-
-        private Image GetLayerImage(PsdLayer layer, Image layerImage)
-        {
-            Image ret = new Bitmap(psdFile.Width, psdFile.Height);
-            using (Graphics g = Graphics.FromImage(ret))
-            {
-                g.FillRectangle(Brushes.Gray, 0, 0, ret.Width, ret.Height);
-                g.DrawImage(layerImage, layer.Bounds);
-            }
-            return ret;
-        }
-
-        private void CountPixels(Bitmap image, out int totalPixels, out double weightedPixels, out int transparent, out double averageTransparency)
-        {
-            weightedPixels = 0;
-            totalPixels = 0;
-            transparent = 0;
-            averageTransparency = 0;
-            for (int x = 0; x < image.Width; x++)
-            {
-                for (int y = 0; y < image.Height; y++)
-                {
-                    Color pixel = image.GetPixel(x, y);
-                    if (pixel.A == 0)
-                    {
-                        transparent++;
-                    }
-                    else
-                    {
-                        averageTransparency += pixel.A / 255d;
-                        totalPixels++;
-                        weightedPixels += pixel.A / 255d;
-                    }
-                }
-            }
-            averageTransparency /= totalPixels;
-            averageTransparency *= 100;
-            transparent += (psdFile.Width * psdFile.Height) - (image.Width * image.Height);
         }
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)
