@@ -103,7 +103,7 @@ namespace ImageToolbox
             Check.Equals(nameof(compression), compression, PsdCompression.Rle);
             Check.Equals(nameof(Depth), Depth, 8);
             Check.Equals(nameof(ColorMode), ColorMode, PsdColorMode.Rgb);
-            Check.Equals(nameof(Channels), Channels, 4);
+            Check.Equals(nameof(Channels), Channels, 3, 4);
             Bitmap = new Bitmap(Width, Height);
             byte[] imageData = reader.ReadRleBlock(Height * Channels);
             Check.Equals($"{nameof(imageData)}.Length", imageData.Length, Channels * Height * Width);
@@ -112,7 +112,7 @@ namespace ImageToolbox
                 for (int x = 0; x < Width; x++)
                 {
                     Bitmap.SetPixel(x, y, Color.FromArgb(
-                        imageData[(Height * Width * 3) + (Width * y) + x],
+                        Channels == 3 ? 255 : imageData[(Height * Width * 3) + (Width * y) + x],
                         imageData[(Height * Width * 0) + (Width * y) + x],
                         imageData[(Height * Width * 1) + (Width * y) + x],
                         imageData[(Height * Width * 2) + (Width * y) + x]
