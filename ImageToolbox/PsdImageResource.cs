@@ -17,6 +17,10 @@
             }
 
             Data = reader.ReadBytes(reader.ReadInt32());
+            if (Data.Length % 2 == 1)
+            {
+                Check.NullPadding(reader, 1);
+            }
         }
 
         public string Signature { get; private set; }
@@ -28,6 +32,7 @@
             + 2 // Id 2 bytes
             + Name.Length + (Name.Length % 2 == 0 ? 2 : 1) // name is padded with 1 or 2 nulls to make the data even long
             + 4 // 4 data length bytes
-            + Data.Length;
+            + Data.Length
+            + (Data.Length % 2 == 1 ? 1 : 0); // padding to make even length
     }
 }
