@@ -102,7 +102,7 @@ namespace ImageToolbox
 
         public Bitmap GetBitmap()
         {
-            if (bitmap == null)
+            if (bitmap == null && Bounds.Width > 0 && Bounds.Height > 0)
             {
                 PsdChannel alpha = Channels.First(c => c.Id == PsdChannelId.TransparencyMask);
                 PsdChannel red = Channels.First(c => c.Id == PsdChannelId.Red);

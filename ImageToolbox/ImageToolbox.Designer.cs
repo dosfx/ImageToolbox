@@ -50,9 +50,9 @@ namespace ImageToolbox
             // 
             // menuStrip
             // 
-            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openPsdMenuItem});
+            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(784, 24);
@@ -73,6 +73,7 @@ namespace ImageToolbox
             this.mainPictureBox.Location = new System.Drawing.Point(10, 10);
             this.mainPictureBox.Name = "mainPictureBox";
             this.mainPictureBox.Size = new System.Drawing.Size(200, 200);
+            this.mainPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.mainPictureBox.TabIndex = 3;
             this.mainPictureBox.TabStop = false;
             // 
@@ -142,7 +143,7 @@ namespace ImageToolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(28, 28, 28);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(784, 592);
             this.Controls.Add(this.layersPanel);
             this.Controls.Add(this.imagePanel);
