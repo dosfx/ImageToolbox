@@ -89,6 +89,11 @@ namespace ImageToolbox
                 layerLength -= channelLength;
             }
 
+            if (layerLength == 1)
+            {
+                Check.NullPadding(reader, 1);
+                layerLength--;
+            }
             Check.Equals(nameof(layerLength), layerLength, 0L);
             int globalLength = reader.ReadInt32();
             totalLength -= 4;
