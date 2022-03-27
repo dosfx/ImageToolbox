@@ -61,6 +61,12 @@ namespace ImageToolbox
 
         private void OpenFileWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Error != null)
+            {
+                pathLabel.Text = "Error, but you can try another PSD.";
+                MessageBox.Show(this, "Error occured while parsing the PSD, please send the PSD to Dos for correction.", "Parse Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             openFileProgressBar.Visible = false;
             psdFile = (PsdFile)e.Result;
             pathLabel.Text = (string)pathLabel.Tag;

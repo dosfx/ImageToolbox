@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -12,8 +13,11 @@ namespace ImageToolbox
 {
     partial class LayerPanel : UserControl
     {
+        private static int layerErrors = 0;
+
         public const string HiddenText = "Hidden";
         public const string VisibleText = "Visible";
+
         public LayerPanel()
         {
             InitializeComponent();
@@ -98,6 +102,15 @@ namespace ImageToolbox
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (e.Error != null)
+            {
+                if (Interlocked.Increment(ref layerErrors) == 1)
+                {
+                    // will only show for the first one.
+                    MessageBox.Show(this, "Error occured while processing one or more of the layers, please send the PSD to Dos for correction.", "Proccessing Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return;
+            }
             Tuple<Image, int, double, int, double> args = (Tuple<Image, int, double, int, double>)e.Result;
             imageBox.Image = args.Item1;
             totalLabel.Text = $"{args.Item2} image pixels";
