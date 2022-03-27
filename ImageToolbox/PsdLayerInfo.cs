@@ -50,6 +50,7 @@
             public Type DividerType { get; private set; }
             public string DataSignature { get; private set; }
             public string BlendMode { get; private set; }
+            public int? SubType { get; private set; }
 
             protected override void ParseData(PsdBinaryReader reader)
             {
@@ -60,6 +61,11 @@
                     DataSignature = reader.ReadString(4);
                     BlendMode = reader.ReadString(4);
                     dataCount += 8;
+                }
+                if (Length >= 16)
+                {
+                    SubType = reader.ReadInt32();
+                    dataCount += 4;
                 }
                 Check.Equals(nameof(dataCount), dataCount, Length);
             }
