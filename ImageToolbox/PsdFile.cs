@@ -91,10 +91,10 @@ namespace ImageToolbox
                 layerLength -= channelLength;
             }
 
-            if (layerLength == 1)
+            if (layerLength < 4)
             {
-                Check.NullPadding(reader, 1);
-                layerLength--;
+                Check.NullPadding(reader, (int)layerLength);
+                layerLength -= layerLength;
             }
             Check.Equals(nameof(layerLength), layerLength, 0L);
 
