@@ -30,6 +30,8 @@ namespace ImageToolbox
         public byte[] ColorModeData { get; private set; }
         public PsdImageResource[] ImageResources { get; private set; }
         public PsdLayer[] Layers { get; private set; }
+        public byte[] GlobalMaskData { get; private set; }
+        public PsdLayerInfo[] AdditionalInfo { get; private set; }
         public Bitmap Bitmap { get; private set; }
 
         public bool IsPsb => Version == 2;
@@ -95,9 +97,23 @@ namespace ImageToolbox
                 layerLength--;
             }
             Check.Equals(nameof(layerLength), layerLength, 0L);
-            int globalLength = reader.ReadInt32();
-            totalLength -= 4;
-            Check.Equals(nameof(globalLength), globalLength, 0);
+
+            if (totalLength > 0)
+            {
+                int globalLength = reader.ReadInt32();
+                totalLength -= globalLength + 4;
+                GlobalMaskData = reader.ReadBytes(globalLength);
+                globalLength -= globalLength;
+                Check.Equals(nameof(globalLength), globalLength, 0);
+                List<PsdLayerInfo> addiInfo = new List<PsdLayerInfo>();
+                while (totalLength > 0)
+                {
+                    PsdLayerInfo layerInfo = PsdLayerInfo.ParseLayerInfo(reader);
+                    addiInfo.Add(layerInfo);
+                    totalLength -= layerInfo.DataLength;
+                }
+                AdditionalInfo = addiInfo.ToArray();
+            }
             Check.Equals(nameof(totalLength), totalLength, 0L);
         }
 
