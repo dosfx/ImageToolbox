@@ -39,9 +39,13 @@ namespace ImageToolbox
             this.sizeLabel = new System.Windows.Forms.Label();
             this.layersPanel = new System.Windows.Forms.Panel();
             this.openFileWorker = new System.ComponentModel.BackgroundWorker();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.imagePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // openPsdDialog
@@ -50,9 +54,9 @@ namespace ImageToolbox
             // 
             // menuStrip
             // 
+            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openPsdMenuItem});
-            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(784, 24);
@@ -96,9 +100,9 @@ namespace ImageToolbox
             this.imagePanel.Controls.Add(this.sizeLabel);
             this.imagePanel.Controls.Add(this.mainPictureBox);
             this.imagePanel.Controls.Add(this.pathLabel);
-            this.imagePanel.Location = new System.Drawing.Point(10, 34);
+            this.imagePanel.Location = new System.Drawing.Point(10, 10);
             this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(764, 220);
+            this.imagePanel.Size = new System.Drawing.Size(380, 220);
             this.imagePanel.TabIndex = 5;
             // 
             // openFileProgressBar
@@ -107,7 +111,7 @@ namespace ImageToolbox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.openFileProgressBar.Location = new System.Drawing.Point(216, 187);
             this.openFileProgressBar.Name = "openFileProgressBar";
-            this.openFileProgressBar.Size = new System.Drawing.Size(543, 23);
+            this.openFileProgressBar.Size = new System.Drawing.Size(159, 23);
             this.openFileProgressBar.TabIndex = 6;
             this.openFileProgressBar.Visible = false;
             // 
@@ -126,10 +130,10 @@ namespace ImageToolbox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.layersPanel.AutoScroll = true;
             this.layersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.layersPanel.Location = new System.Drawing.Point(10, 260);
+            this.layersPanel.Location = new System.Drawing.Point(10, 240);
             this.layersPanel.Name = "layersPanel";
             this.layersPanel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 10);
-            this.layersPanel.Size = new System.Drawing.Size(764, 322);
+            this.layersPanel.Size = new System.Drawing.Size(380, 287);
             this.layersPanel.TabIndex = 6;
             // 
             // openFileWorker
@@ -139,14 +143,29 @@ namespace ImageToolbox
             this.openFileWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.OpenFileWorker_ProgressChanged);
             this.openFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.OpenFileWorker_RunWorkerCompleted);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.imagePanel);
+            this.splitContainer1.Panel1.Controls.Add(this.layersPanel);
+            this.splitContainer1.Panel1MinSize = 400;
+            this.splitContainer1.Size = new System.Drawing.Size(784, 537);
+            this.splitContainer1.SplitterDistance = 400;
+            this.splitContainer1.TabIndex = 7;
+            // 
             // ImageToolbox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(784, 592);
-            this.Controls.Add(this.layersPanel);
-            this.Controls.Add(this.imagePanel);
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.MainMenuStrip = this.menuStrip;
@@ -157,6 +176,9 @@ namespace ImageToolbox
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
             this.imagePanel.ResumeLayout(false);
             this.imagePanel.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -174,6 +196,7 @@ namespace ImageToolbox
         private System.Windows.Forms.Label sizeLabel;
         private System.Windows.Forms.ProgressBar openFileProgressBar;
         private System.ComponentModel.BackgroundWorker openFileWorker;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 
