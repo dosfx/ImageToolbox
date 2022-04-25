@@ -39,13 +39,16 @@ namespace ImageToolbox
             this.sizeLabel = new System.Windows.Forms.Label();
             this.layersPanel = new System.Windows.Forms.Panel();
             this.openFileWorker = new System.ComponentModel.BackgroundWorker();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.spacer = new System.Windows.Forms.Label();
+            this.noDetailsLabel = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.imagePanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
+            this.splitContainer.Panel1.SuspendLayout();
+            this.splitContainer.Panel2.SuspendLayout();
+            this.splitContainer.SuspendLayout();
             this.SuspendLayout();
             // 
             // openPsdDialog
@@ -93,16 +96,15 @@ namespace ImageToolbox
             // 
             // imagePanel
             // 
-            this.imagePanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.imagePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.imagePanel.Controls.Add(this.openFileProgressBar);
             this.imagePanel.Controls.Add(this.sizeLabel);
             this.imagePanel.Controls.Add(this.mainPictureBox);
             this.imagePanel.Controls.Add(this.pathLabel);
+            this.imagePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.imagePanel.Location = new System.Drawing.Point(10, 10);
             this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(380, 220);
+            this.imagePanel.Size = new System.Drawing.Size(518, 220);
             this.imagePanel.TabIndex = 5;
             // 
             // openFileProgressBar
@@ -111,7 +113,7 @@ namespace ImageToolbox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.openFileProgressBar.Location = new System.Drawing.Point(216, 187);
             this.openFileProgressBar.Name = "openFileProgressBar";
-            this.openFileProgressBar.Size = new System.Drawing.Size(159, 23);
+            this.openFileProgressBar.Size = new System.Drawing.Size(297, 23);
             this.openFileProgressBar.TabIndex = 6;
             this.openFileProgressBar.Visible = false;
             // 
@@ -125,15 +127,13 @@ namespace ImageToolbox
             // 
             // layersPanel
             // 
-            this.layersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.layersPanel.AutoScroll = true;
             this.layersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.layersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layersPanel.Location = new System.Drawing.Point(10, 240);
             this.layersPanel.Name = "layersPanel";
             this.layersPanel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 10);
-            this.layersPanel.Size = new System.Drawing.Size(380, 287);
+            this.layersPanel.Size = new System.Drawing.Size(518, 287);
             this.layersPanel.TabIndex = 6;
             // 
             // openFileWorker
@@ -143,21 +143,48 @@ namespace ImageToolbox
             this.openFileWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.OpenFileWorker_ProgressChanged);
             this.openFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.OpenFileWorker_RunWorkerCompleted);
             // 
-            // splitContainer1
+            // splitContainer
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer.Name = "splitContainer";
             // 
-            // splitContainer1.Panel1
+            // splitContainer.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.imagePanel);
-            this.splitContainer1.Panel1.Controls.Add(this.layersPanel);
-            this.splitContainer1.Panel1MinSize = 400;
-            this.splitContainer1.Size = new System.Drawing.Size(784, 537);
-            this.splitContainer1.SplitterDistance = 400;
-            this.splitContainer1.TabIndex = 7;
+            this.splitContainer.Panel1.Controls.Add(this.layersPanel);
+            this.splitContainer.Panel1.Controls.Add(this.spacer);
+            this.splitContainer.Panel1.Controls.Add(this.imagePanel);
+            this.splitContainer.Panel1.Padding = new System.Windows.Forms.Padding(10);
+            // 
+            // splitContainer.Panel2
+            // 
+            this.splitContainer.Panel2.AutoScroll = true;
+            this.splitContainer.Panel2.Controls.Add(this.noDetailsLabel);
+            this.splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(10);
+            this.splitContainer.Panel2MinSize = 242;
+            this.splitContainer.Size = new System.Drawing.Size(784, 537);
+            this.splitContainer.SplitterDistance = 538;
+            this.splitContainer.TabIndex = 7;
+            // 
+            // spacer
+            // 
+            this.spacer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spacer.Location = new System.Drawing.Point(10, 230);
+            this.spacer.Name = "spacer";
+            this.spacer.Size = new System.Drawing.Size(518, 10);
+            this.spacer.TabIndex = 7;
+            // 
+            // noDetailsLabel
+            // 
+            this.noDetailsLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.noDetailsLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.noDetailsLabel.Location = new System.Drawing.Point(10, 10);
+            this.noDetailsLabel.Name = "noDetailsLabel";
+            this.noDetailsLabel.Size = new System.Drawing.Size(222, 22);
+            this.noDetailsLabel.TabIndex = 0;
+            this.noDetailsLabel.Text = "Select a layer";
+            this.noDetailsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ImageToolbox
             // 
@@ -165,7 +192,7 @@ namespace ImageToolbox
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(784, 561);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.menuStrip);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.MainMenuStrip = this.menuStrip;
@@ -176,9 +203,10 @@ namespace ImageToolbox
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).EndInit();
             this.imagePanel.ResumeLayout(false);
             this.imagePanel.PerformLayout();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitContainer.Panel1.ResumeLayout(false);
+            this.splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
+            this.splitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -196,7 +224,9 @@ namespace ImageToolbox
         private System.Windows.Forms.Label sizeLabel;
         private System.Windows.Forms.ProgressBar openFileProgressBar;
         private System.ComponentModel.BackgroundWorker openFileWorker;
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer splitContainer;
+        private System.Windows.Forms.Label spacer;
+        private System.Windows.Forms.Label noDetailsLabel;
     }
 }
 

@@ -14,6 +14,7 @@ namespace ImageToolbox
     public partial class ImageToolbox : Form
     {
         private PsdFile psdFile;
+        private LayerPanel selectedLayer;
 
         public ImageToolbox()
         {
@@ -23,8 +24,6 @@ namespace ImageToolbox
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            //OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\Puggle_200.psd");
-            //OpenFile(@"C:\dev\ImageToolbox\ImageToolbox\bin\Debug\rafi centaur basing cont.psd");
         }
 
         private void OpenFile(string path)
@@ -107,6 +106,7 @@ namespace ImageToolbox
                         Tag = layer,
                     };
                     layerPanel.ProcessLayer(layer, psdFile.Width, psdFile.Height);
+                    layerPanel.SelectedChanged += LayerPanel_SelectedChanged;
                     row = layerPanel;
                 }
                 currentLevel.Add(row);
@@ -114,6 +114,44 @@ namespace ImageToolbox
             }
             layersPanel.ResumeLayout();
             layersPanel.Visible = true;
+        }
+
+        private void LayerPanel_SelectedChanged(object sender, EventArgs e)
+        {
+            // sender is the layer panel
+            LayerPanel newSelected = (LayerPanel)sender;
+            SelectLayer(newSelected.Selected ? newSelected : null);
+        }
+
+        private void SelectLayer(LayerPanel newSelected)
+        {
+            // blow it all away
+            splitContainer.Panel2.Controls.Clear();
+
+            if (selectedLayer != null)
+            {
+                // first deselect the old one
+                selectedLayer.SelectedChanged -= LayerPanel_SelectedChanged;
+                selectedLayer.Selected = false;
+                selectedLayer.SelectedChanged += LayerPanel_SelectedChanged;
+            }
+
+            selectedLayer = newSelected;
+            if (selectedLayer != null)
+            {
+                splitContainer.Panel2.Controls.Add(new LayerDetailsPanel()
+                {
+                    Dock = DockStyle.Top,
+                    IsHidden = selectedLayer.IsHidden,
+                    LayerImage = selectedLayer.Image,
+                    LayerName = selectedLayer.LayerName
+                });
+            }
+            else
+            {
+                splitContainer.Panel2.Controls.Add(noDetailsLabel);
+            }
+
         }
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)

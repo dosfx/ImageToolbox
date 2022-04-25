@@ -17,12 +17,40 @@ namespace ImageToolbox
 
         public const string HiddenText = "Hidden";
         public const string VisibleText = "Visible";
+        public static readonly Color SelectedColor = Color.FromArgb(38, 79, 120);
+
+        private bool _selected;
 
         public LayerPanel()
         {
             InitializeComponent();
 
+            List<Control> controls = new List<Control>(new Control[] { panel1 });
+            while (controls.Count > 0)
+            {
+                Control control = controls.Last();
+                controls.RemoveAt(controls.Count - 1);
+                control.Click += Control_Click;
+                controls.AddRange(control.Controls.Cast<Control>());
+            }
+
             IsHidden = false;
+        }
+
+        public event EventHandler SelectedChanged;
+
+        public bool Selected 
+        {
+            get => _selected;
+            set
+            {
+                if (value != _selected)
+                {
+                    _selected = value;
+                    panel1.BackColor = value ? SelectedColor : Color.Transparent;
+                    SelectedChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
 
         public double LayerOpacity
@@ -117,6 +145,11 @@ namespace ImageToolbox
             weightedLabel.Text = $"{args.Item3:.00} weighted pixels";
             transparentLabel.Text = $"{args.Item4} fully transparent pixels";
             averageLabel.Text = $"{args.Item5:.00}% average transparency";
+        }
+
+        private void Control_Click(object sender, EventArgs e)
+        {
+            Selected = !Selected;
         }
     }
 }
