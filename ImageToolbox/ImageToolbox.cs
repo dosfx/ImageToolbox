@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,25 +16,34 @@ namespace ImageToolbox
     {
         private PsdFile psdFile;
         private LayerPanel selectedLayer;
+        private readonly Dictionary<PsdLayer, LayerDetailsPanel.Details> layerDetails;
 
         public ImageToolbox()
         {
             InitializeComponent();
+
+            layerDetails = new Dictionary<PsdLayer, LayerDetailsPanel.Details>();
         }
 
-        protected override void OnLoad(EventArgs e)
+        private void OpenPsdMenuItem_Click(object sender, EventArgs e)
         {
-            base.OnLoad(e);
+            if (openPsdDialog.ShowDialog() == DialogResult.OK)
+            {
+                OpenFile(openPsdDialog.FileName);
+            }
         }
 
         private void OpenFile(string path)
         {
             layersPanel.Controls.Clear();
+            layerDetails.Clear();
             pathLabel.Text = "Loading...";
             pathLabel.Tag = path;
             sizeLabel.Text = string.Empty;
+            mainPictureBox.Image = null;
             openFileProgressBar.Value = 0;
             openFileProgressBar.Visible = true;
+            SelectLayer(null);
             openFileWorker.RunWorkerAsync(path);
         }
 
@@ -44,7 +54,16 @@ namespace ImageToolbox
             using (ProgressStream stream = new ProgressStream(fileStream))
             {
                 stream.ProgressChanged += OpenFileStream_ProgressChanged;
-                e.Result = new PsdFile(stream);
+                openFileWorker.ReportProgress(0, 100);
+                PsdFile file = new PsdFile(stream);
+                e.Result = file;
+                openFileWorker.ReportProgress(0, file.Layers.Length);
+                int progress = 0;
+                Parallel.For(0, file.Layers.Length, i =>
+                {
+                    file.Layers[i].GetBitmap();
+                    openFileWorker.ReportProgress(Interlocked.Increment(ref progress));
+                });
             }
         }
 
@@ -55,6 +74,12 @@ namespace ImageToolbox
 
         private void OpenFileWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            int? newMax = e.UserState as int?;
+            if (newMax != null)
+            {
+                openFileProgressBar.Maximum = (int)newMax;
+            }
+
             openFileProgressBar.Value = e.ProgressPercentage;
         }
 
@@ -97,15 +122,26 @@ namespace ImageToolbox
                 }
                 else
                 {
+                    Image displayImage = new Bitmap(psdFile.Width, psdFile.Height);
+                    Bitmap layerImage = layer.GetBitmap();
+                    if (layerImage != null)
+                    {
+                        using (Graphics g = Graphics.FromImage(displayImage))
+                        {
+                            g.FillRectangle(Brushes.Gray, 0, 0, displayImage.Width, displayImage.Height);
+                            g.DrawImage(layerImage, layer.Bounds);
+                        }
+                    }
+
                     LayerPanel layerPanel = new LayerPanel()
                     {
                         Dock = DockStyle.Top,
+                        Image = displayImage,
                         IsHidden = layer.IsHidden,
                         LayerName = layer.Name,
                         LayerOpacity = (layer.Opacity / 255d) * 100,
                         Tag = layer,
                     };
-                    layerPanel.ProcessLayer(layer, psdFile.Width, psdFile.Height);
                     layerPanel.SelectedChanged += LayerPanel_SelectedChanged;
                     row = layerPanel;
                 }
@@ -139,26 +175,29 @@ namespace ImageToolbox
             selectedLayer = newSelected;
             if (selectedLayer != null)
             {
+                PsdLayer layer = selectedLayer.Tag as PsdLayer;
+                if (!layerDetails.TryGetValue(layer, out LayerDetailsPanel.Details details))
+                {
+                    details = new LayerDetailsPanel.Details()
+                    {
+                        Layer = layer,
+                        Width = psdFile.Width,
+                        Height = psdFile.Height
+                    };
+                    layerDetails.Add(layer, details);
+                }
                 splitContainer.Panel2.Controls.Add(new LayerDetailsPanel()
                 {
                     Dock = DockStyle.Top,
-                    IsHidden = selectedLayer.IsHidden,
-                    LayerImage = selectedLayer.Image,
-                    LayerName = selectedLayer.LayerName
+                    IsHidden = layer.IsHidden,
+                    LayerDetails = details,
+                    LayerName = layer.Name,
+                    LayerOpacity = (layer.Opacity / 255d) * 100
                 });
             }
             else
             {
                 splitContainer.Panel2.Controls.Add(noDetailsLabel);
-            }
-
-        }
-
-        private void OpenPsdMenuItem_Click(object sender, EventArgs e)
-        {
-            if (openPsdDialog.ShowDialog() == DialogResult.OK)
-            {
-                OpenFile(openPsdDialog.FileName);
             }
         }
     }

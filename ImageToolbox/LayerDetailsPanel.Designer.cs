@@ -31,8 +31,10 @@ namespace ImageToolbox
         {
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.nameLabel = new System.Windows.Forms.Label();
-            this.hiddenLabel = new System.Windows.Forms.Label();
-            this.processLayerWorker = new System.ComponentModel.BackgroundWorker();
+            this.detailLabel = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.detailsWorker = new System.ComponentModel.BackgroundWorker();
+            this.opacityLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,31 +61,51 @@ namespace ImageToolbox
             this.nameLabel.TabIndex = 2;
             this.nameLabel.Text = "Layer Name";
             // 
-            // hiddenLabel
+            // detailLabel
             // 
-            this.hiddenLabel.AutoSize = true;
-            this.hiddenLabel.BackColor = System.Drawing.Color.SteelBlue;
-            this.hiddenLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hiddenLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.hiddenLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.hiddenLabel.Location = new System.Drawing.Point(10, 250);
-            this.hiddenLabel.Margin = new System.Windows.Forms.Padding(3);
-            this.hiddenLabel.Name = "hiddenLabel";
-            this.hiddenLabel.Padding = new System.Windows.Forms.Padding(4);
-            this.hiddenLabel.Size = new System.Drawing.Size(51, 23);
-            this.hiddenLabel.TabIndex = 3;
-            this.hiddenLabel.Text = "Hidden";
+            this.detailLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.detailLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.detailLabel.Location = new System.Drawing.Point(10, 250);
+            this.detailLabel.Name = "detailLabel";
+            this.detailLabel.Size = new System.Drawing.Size(200, 23);
+            this.detailLabel.TabIndex = 3;
+            this.detailLabel.Text = "Hidden";
+            this.detailLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // processLayerWorker
+            // progressBar
             // 
-            this.processLayerWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ProcessLayerWorker_DoWork);
+            this.progressBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.progressBar.Location = new System.Drawing.Point(10, 383);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(200, 23);
+            this.progressBar.TabIndex = 4;
+            this.progressBar.Visible = false;
+            // 
+            // detailsWorker
+            // 
+            this.detailsWorker.WorkerReportsProgress = true;
+            this.detailsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.DetailsWorker_DoWork);
+            this.detailsWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.DetailsWorker_ProgressChanged);
+            this.detailsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.DetailsWorker_RunWorkerCompleted);
+            // 
+            // opacityLabel
+            // 
+            this.opacityLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.opacityLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.opacityLabel.Location = new System.Drawing.Point(10, 273);
+            this.opacityLabel.Name = "opacityLabel";
+            this.opacityLabel.Size = new System.Drawing.Size(200, 23);
+            this.opacityLabel.TabIndex = 5;
+            this.opacityLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // LayerDetailsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.hiddenLabel);
+            this.Controls.Add(this.opacityLabel);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.detailLabel);
             this.Controls.Add(this.nameLabel);
             this.Controls.Add(this.pictureBox);
             this.Name = "LayerDetailsPanel";
@@ -91,7 +113,6 @@ namespace ImageToolbox
             this.Size = new System.Drawing.Size(220, 416);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -99,7 +120,9 @@ namespace ImageToolbox
 
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.Label hiddenLabel;
-        private System.ComponentModel.BackgroundWorker processLayerWorker;
+        private System.Windows.Forms.Label detailLabel;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.ComponentModel.BackgroundWorker detailsWorker;
+        private System.Windows.Forms.Label opacityLabel;
     }
 }
