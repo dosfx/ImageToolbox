@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImageToolbox
@@ -28,14 +24,24 @@ namespace ImageToolbox
             {
                 Control control = controls.Last();
                 controls.RemoveAt(controls.Count - 1);
-                control.Click += Control_Click;
                 controls.AddRange(control.Controls.Cast<Control>());
+                if (control != baseLayerRadioButton)
+                {
+                    control.Click += Control_Click;
+                }
             }
 
             IsHidden = false;
         }
 
+        public event EventHandler BaseLayerCheckedChanged;
         public event EventHandler SelectedChanged;
+
+        public bool BaseLayerChecked
+        {
+            get => baseLayerRadioButton.Checked;
+            set => baseLayerRadioButton.Checked = value;
+        }
 
         public bool Selected 
         {
@@ -77,6 +83,11 @@ namespace ImageToolbox
         private void Control_Click(object sender, EventArgs e)
         {
             Selected = !Selected;
+        }
+
+        private void BaseLayerRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            BaseLayerCheckedChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

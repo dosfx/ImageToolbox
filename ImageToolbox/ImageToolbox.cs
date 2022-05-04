@@ -15,6 +15,7 @@ namespace ImageToolbox
     public partial class ImageToolbox : Form
     {
         private PsdFile psdFile;
+        private LayerPanel baseLayer;
         private LayerPanel selectedLayer;
         private readonly Dictionary<PsdLayer, LayerDetailsPanel.Details> layerDetails;
 
@@ -142,6 +143,7 @@ namespace ImageToolbox
                         LayerOpacity = (layer.Opacity / 255d) * 100,
                         Tag = layer,
                     };
+                    layerPanel.BaseLayerCheckedChanged += LayerPanel_BaseLayerCheckedChanged;
                     layerPanel.SelectedChanged += LayerPanel_SelectedChanged;
                     row = layerPanel;
                 }
@@ -150,6 +152,32 @@ namespace ImageToolbox
             }
             layersPanel.ResumeLayout();
             layersPanel.Visible = true;
+        }
+
+        private void LayerPanel_BaseLayerCheckedChanged(object sender, EventArgs e)
+        {
+            // sender is the layer panel
+            LayerPanel layerPanel = (LayerPanel)sender;
+            SelectBaseLayer(layerPanel.BaseLayerChecked ? layerPanel : null);
+        }
+
+        private void SelectBaseLayer(LayerPanel newBaseLayer)
+        {
+            if (baseLayer != null)
+            {
+                // first uncheck the old one
+                baseLayer.BaseLayerCheckedChanged -= LayerPanel_BaseLayerCheckedChanged;
+                baseLayer.BaseLayerChecked = false;
+                baseLayer.BaseLayerCheckedChanged += LayerPanel_BaseLayerCheckedChanged;
+            }
+
+            baseLayer = newBaseLayer;
+            if (baseLayer != null)
+            {
+                // clear all the details stuff
+                SelectLayer(null);
+                layerDetails.Clear();
+            }
         }
 
         private void LayerPanel_SelectedChanged(object sender, EventArgs e)
@@ -180,6 +208,7 @@ namespace ImageToolbox
                 {
                     details = new LayerDetailsPanel.Details()
                     {
+                        BaseLayer = baseLayer?.Tag as PsdLayer,
                         Layer = layer,
                         Width = psdFile.Width,
                         Height = psdFile.Height

@@ -34,6 +34,7 @@ namespace ImageToolbox
             this.displayPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.hiddenLabel = new System.Windows.Forms.Label();
             this.opacityLabel = new System.Windows.Forms.Label();
+            this.baseLayerRadioButton = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.extraBorder = new System.Windows.Forms.Label();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
@@ -68,6 +69,7 @@ namespace ImageToolbox
             // 
             this.displayPanel.Controls.Add(this.hiddenLabel);
             this.displayPanel.Controls.Add(this.opacityLabel);
+            this.displayPanel.Controls.Add(this.baseLayerRadioButton);
             this.displayPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.displayPanel.Location = new System.Drawing.Point(101, 30);
             this.displayPanel.Name = "displayPanel";
@@ -99,8 +101,20 @@ namespace ImageToolbox
             this.opacityLabel.Margin = new System.Windows.Forms.Padding(3);
             this.opacityLabel.Name = "opacityLabel";
             this.opacityLabel.Padding = new System.Windows.Forms.Padding(4);
-            this.opacityLabel.Size = new System.Drawing.Size(10, 23);
+            this.opacityLabel.Size = new System.Drawing.Size(53, 23);
             this.opacityLabel.TabIndex = 5;
+            this.opacityLabel.Text = "Opacity";
+            // 
+            // baseLayerRadioButton
+            // 
+            this.baseLayerRadioButton.AutoSize = true;
+            this.baseLayerRadioButton.Location = new System.Drawing.Point(129, 13);
+            this.baseLayerRadioButton.Name = "baseLayerRadioButton";
+            this.baseLayerRadioButton.Size = new System.Drawing.Size(78, 17);
+            this.baseLayerRadioButton.TabIndex = 6;
+            this.baseLayerRadioButton.Text = "Base Layer";
+            this.baseLayerRadioButton.UseVisualStyleBackColor = true;
+            this.baseLayerRadioButton.CheckedChanged += new System.EventHandler(this.BaseLayerRadioButton_CheckedChanged);
             // 
             // panel1
             // 
@@ -152,5 +166,6 @@ namespace ImageToolbox
         private System.Windows.Forms.Label hiddenLabel;
         private System.Windows.Forms.Label opacityLabel;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.RadioButton baseLayerRadioButton;
     }
 }

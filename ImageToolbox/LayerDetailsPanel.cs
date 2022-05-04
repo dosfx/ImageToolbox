@@ -16,16 +16,22 @@ namespace ImageToolbox
         {
             public bool Filled { get; set; }
             internal PsdLayer Layer { get; set; }
+            internal PsdLayer BaseLayer { get; set; }
             public int Width { get; set; }
             public int Height { get; set; }
-            public Image Image { get; set; }
             public int TotalPixels { get; set; }
             public double WeightedPixels { get; set; }
             public int TransparentPixels { get; set; }
             public double AverageTransparancy { get; set; }
+            public int BaseInsidePixels { get; set; }
+            public int BaseOutsidePixels { get; set; }
+            public Bitmap BaseInsideImage { get; set; }
+            public Bitmap BaseOutsideImage { get; set; }
         }
 
         private Details details;
+        private bool baseInsideChecked;
+        private bool baseOutsideChecked;
 
         public LayerDetailsPanel()
         {
@@ -83,12 +89,42 @@ namespace ImageToolbox
 
         private void FillDetails()
         {
-            pictureBox.Image = details.Image;
-            AddDetail($"Total Pixels: {details.TotalPixels}");
-            AddDetail($"Weighted Pixels: {details.WeightedPixels:.00}");
-            AddDetail($"Transparent Pixels: {details.TransparentPixels}");
-            AddDetail($"Average Transparency: {details.AverageTransparancy:.00}%");
+            DrawImage();
+            totalLabel.Text = $"Total Pixels: {details.TotalPixels}";
+            weightedLabel.Text = $"Weighted Pixels: {details.WeightedPixels:.00}";
+            transparentLabel.Text = $"Transparent Pixels: {details.TransparentPixels}";
+            averageLabel.Text = $"Average Transparency: {details.AverageTransparancy:.00}%";
+            if (details.BaseLayer != null)
+            {
+                insideCheckBox.Text = $"Pixels Inside Base: {details.BaseInsidePixels}";
+                insidePanel.Visible = true;
+                outsideCheckBox.Text = $"Pixels Outside Base: {details.BaseOutsidePixels}";
+                outsidePanel.Visible = true;
+            }
+
             CalcHeight();
+        }
+
+        private void DrawImage()
+        {
+            Bitmap displayImage = new Bitmap(details.Width, details.Height);
+            using (Graphics g = Graphics.FromImage(displayImage))
+            {
+                g.FillRectangle(Brushes.Gray, 0, 0, displayImage.Width, displayImage.Height);
+                g.DrawImage(details.Layer.GetBitmap(), details.Layer.Bounds);
+
+                if (baseInsideChecked)
+                {
+                    g.DrawImage(details.BaseInsideImage, details.Layer.Bounds);
+                }
+
+                if (baseOutsideChecked)
+                {
+                    g.DrawImage(details.BaseOutsideImage, details.Layer.Bounds);
+                }
+            }
+
+            pictureBox.Image = displayImage;
         }
 
         private void AddDetail(string text)
@@ -107,21 +143,14 @@ namespace ImageToolbox
 
         private void DetailsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            PsdLayer layer = details.Layer;
-            Image displayImage = new Bitmap(details.Width, details.Height);
-            Bitmap layerImage = layer.GetBitmap();
-
-            int totalPixels = 0;
-            double weightedPixels = 0;
-            int transparent = 0;
-            double averageTransparency = 0;
-
+            Bitmap layerImage = details.Layer.GetBitmap();
+            Bitmap baseLayerImage = details.BaseLayer?.GetBitmap();
             if (layerImage != null)
             {
-                using (Graphics g = Graphics.FromImage(displayImage))
+                if (baseLayerImage != null)
                 {
-                    g.FillRectangle(Brushes.Gray, 0, 0, displayImage.Width, displayImage.Height);
-                    g.DrawImage(layerImage, layer.Bounds);
+                    details.BaseInsideImage = new Bitmap(layerImage.Width, layerImage.Height);
+                    details.BaseOutsideImage = new Bitmap(layerImage.Width, layerImage.Height);
                 }
 
                 for (int x = 0; x < layerImage.Width; x++)
@@ -131,30 +160,48 @@ namespace ImageToolbox
                         Color pixel = layerImage.GetPixel(x, y);
                         if (pixel.A == 0)
                         {
-                            transparent++;
+                            details.TransparentPixels++;
                         }
                         else
                         {
-                            averageTransparency += pixel.A / 255d;
-                            totalPixels++;
-                            weightedPixels += pixel.A / 255d;
+                            details.AverageTransparancy += pixel.A / 255d;
+                            details.TotalPixels++;
+                            details.WeightedPixels += pixel.A / 255d;
+
+                            if (baseLayerImage != null)
+                            {
+                                // translate x,y from layer coords to baselayer coords
+                                int baseX = x - details.Layer.Bounds.Left + details.BaseLayer.Bounds.Left;
+                                int baseY = y - details.Layer.Bounds.Top + details.BaseLayer.Bounds.Top;
+                                Color invert = HslColor.InvertColor(pixel);
+
+                                // if x,y outside the layer bounds or the pixel is transparent
+                                if (!(0 <= baseX && baseX < baseLayerImage.Width && 0 <= baseY && baseY < baseLayerImage.Height) ||
+                                    baseLayerImage.GetPixel(baseX, baseY).A == 0)
+                                {
+                                    details.BaseOutsidePixels++;
+                                    details.BaseOutsideImage.SetPixel(x, y, Color.Magenta);
+                                }
+                                else
+                                {
+                                    details.BaseInsidePixels++;
+                                    details.BaseInsideImage.SetPixel(x, y, Color.Magenta);
+                                }
+                            }
                         }
                     }
 
                     detailsWorker.ReportProgress(x);
                 }
             }
-            averageTransparency /= totalPixels;
-            averageTransparency *= 100;
-            transparent += (details.Width * details.Height) - (layer.Bounds.Width * layer.Bounds.Height);
 
-            // put the details in the cache
-            details.Image = displayImage;
-            details.TotalPixels = totalPixels;
-            details.WeightedPixels = weightedPixels;
-            details.TransparentPixels = transparent;
-            details.AverageTransparancy = averageTransparency;
+            // mark as filled
             details.Filled = true;
+
+            // little bit of final tweaks to numbers
+            details.AverageTransparancy /= details.TotalPixels;
+            details.AverageTransparancy *= 100;
+            details.TransparentPixels += (details.Width * details.Height) - (details.Layer.Bounds.Width * details.Layer.Bounds.Height);
         }
 
         private void DetailsWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -171,6 +218,18 @@ namespace ImageToolbox
             }
             progressBar.Visible = false;
             FillDetails();
+        }
+
+        private void InsideCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            baseInsideChecked = insideCheckBox.Checked;
+            DrawImage();
+        }
+
+        private void OutsideCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            baseOutsideChecked = outsideCheckBox.Checked;
+            DrawImage();
         }
     }
 }
