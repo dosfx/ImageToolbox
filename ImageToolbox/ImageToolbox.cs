@@ -25,6 +25,7 @@ namespace ImageToolbox
             InitializeComponent();
 
             layerDetails = new Dictionary<PsdLayer, LayerDetailsPanel.Details>();
+            SelectTab(detailsTabLabel);
         }
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)
@@ -191,7 +192,7 @@ namespace ImageToolbox
         private void SelectLayer(LayerPanel newSelected)
         {
             // blow it all away
-            splitContainer.Panel2.Controls.Clear();
+            detailsPanel.Controls.Clear();
 
             if (selectedLayer != null)
             {
@@ -222,7 +223,7 @@ namespace ImageToolbox
                     layerDetailsPanel = new LayerDetailsPanel() { Dock = DockStyle.Top };
                 }
 
-                splitContainer.Panel2.Controls.Add(layerDetailsPanel);
+                detailsPanel.Controls.Add(layerDetailsPanel);
                 layerDetailsPanel.IsHidden = layer.IsHidden;
                 layerDetailsPanel.LayerDetails = details;
                 layerDetailsPanel.LayerName = layer.Name;
@@ -230,7 +231,31 @@ namespace ImageToolbox
             }
             else
             {
-                splitContainer.Panel2.Controls.Add(noDetailsLabel);
+                detailsPanel.Controls.Add(noDetailsLabel);
+            }
+        }
+
+        private void TabLabel_Click(object sender, EventArgs e)
+        {
+            SelectTab(sender);
+        }
+
+        private void SelectTab(object key)
+        {
+            foreach (Control control in tabsLayoutPanel.Controls)
+            {
+                control.Font = new Font(Font, control == key ? FontStyle.Bold : FontStyle.Regular);
+                control.Margin = new Padding(control.Margin.Left, control == key ? 0 : 2, control.Margin.Right, control.Margin.Bottom);
+                control.Padding = new Padding(control.Padding.Left, control.Padding.Top, control.Padding.Right, control == key ? 8 : 5);
+            }
+
+            if (key == detailsTabLabel)
+            {
+                splitContainer.Panel2.Controls.SetChildIndex(detailsPanel, 0);
+            }
+            else if (key == recolorTabLabel)
+            {
+                splitContainer.Panel2.Controls.SetChildIndex(panel1, 0);
             }
         }
     }

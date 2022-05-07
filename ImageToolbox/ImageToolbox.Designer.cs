@@ -41,7 +41,12 @@ namespace ImageToolbox
             this.openFileWorker = new System.ComponentModel.BackgroundWorker();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.spacer = new System.Windows.Forms.Label();
+            this.detailsPanel = new System.Windows.Forms.Panel();
             this.noDetailsLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tabsLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.detailsTabLabel = new System.Windows.Forms.Label();
+            this.recolorTabLabel = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainPictureBox)).BeginInit();
             this.imagePanel.SuspendLayout();
@@ -49,6 +54,8 @@ namespace ImageToolbox
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            this.detailsPanel.SuspendLayout();
+            this.tabsLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // openPsdDialog
@@ -62,7 +69,7 @@ namespace ImageToolbox
             this.openPsdMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(784, 24);
+            this.menuStrip.Size = new System.Drawing.Size(984, 24);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
             // 
@@ -104,7 +111,7 @@ namespace ImageToolbox
             this.imagePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.imagePanel.Location = new System.Drawing.Point(10, 10);
             this.imagePanel.Name = "imagePanel";
-            this.imagePanel.Size = new System.Drawing.Size(518, 220);
+            this.imagePanel.Size = new System.Drawing.Size(380, 220);
             this.imagePanel.TabIndex = 5;
             // 
             // openFileProgressBar
@@ -113,7 +120,7 @@ namespace ImageToolbox
             | System.Windows.Forms.AnchorStyles.Right)));
             this.openFileProgressBar.Location = new System.Drawing.Point(216, 187);
             this.openFileProgressBar.Name = "openFileProgressBar";
-            this.openFileProgressBar.Size = new System.Drawing.Size(297, 23);
+            this.openFileProgressBar.Size = new System.Drawing.Size(159, 23);
             this.openFileProgressBar.TabIndex = 6;
             this.openFileProgressBar.Visible = false;
             // 
@@ -133,7 +140,7 @@ namespace ImageToolbox
             this.layersPanel.Location = new System.Drawing.Point(10, 240);
             this.layersPanel.Name = "layersPanel";
             this.layersPanel.Padding = new System.Windows.Forms.Padding(10, 0, 10, 10);
-            this.layersPanel.Size = new System.Drawing.Size(518, 287);
+            this.layersPanel.Size = new System.Drawing.Size(380, 387);
             this.layersPanel.TabIndex = 6;
             // 
             // openFileWorker
@@ -158,12 +165,12 @@ namespace ImageToolbox
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.AutoScroll = true;
-            this.splitContainer.Panel2.Controls.Add(this.noDetailsLabel);
-            this.splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(10);
+            this.splitContainer.Panel2.Controls.Add(this.detailsPanel);
+            this.splitContainer.Panel2.Controls.Add(this.panel1);
+            this.splitContainer.Panel2.Controls.Add(this.tabsLayoutPanel);
             this.splitContainer.Panel2MinSize = 242;
-            this.splitContainer.Size = new System.Drawing.Size(784, 537);
-            this.splitContainer.SplitterDistance = 538;
+            this.splitContainer.Size = new System.Drawing.Size(984, 637);
+            this.splitContainer.SplitterDistance = 400;
             this.splitContainer.TabIndex = 7;
             // 
             // spacer
@@ -171,8 +178,19 @@ namespace ImageToolbox
             this.spacer.Dock = System.Windows.Forms.DockStyle.Top;
             this.spacer.Location = new System.Drawing.Point(10, 230);
             this.spacer.Name = "spacer";
-            this.spacer.Size = new System.Drawing.Size(518, 10);
+            this.spacer.Size = new System.Drawing.Size(380, 10);
             this.spacer.TabIndex = 7;
+            // 
+            // detailsPanel
+            // 
+            this.detailsPanel.AutoScroll = true;
+            this.detailsPanel.Controls.Add(this.noDetailsLabel);
+            this.detailsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.detailsPanel.Location = new System.Drawing.Point(0, 32);
+            this.detailsPanel.Name = "detailsPanel";
+            this.detailsPanel.Padding = new System.Windows.Forms.Padding(10);
+            this.detailsPanel.Size = new System.Drawing.Size(580, 605);
+            this.detailsPanel.TabIndex = 2;
             // 
             // noDetailsLabel
             // 
@@ -180,22 +198,67 @@ namespace ImageToolbox
             this.noDetailsLabel.Dock = System.Windows.Forms.DockStyle.Top;
             this.noDetailsLabel.Location = new System.Drawing.Point(10, 10);
             this.noDetailsLabel.Name = "noDetailsLabel";
-            this.noDetailsLabel.Size = new System.Drawing.Size(222, 22);
+            this.noDetailsLabel.Size = new System.Drawing.Size(560, 22);
             this.noDetailsLabel.TabIndex = 0;
             this.noDetailsLabel.Text = "Select a layer";
             this.noDetailsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ImageToolbox
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 32);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(580, 605);
+            this.panel1.TabIndex = 4;
+            // 
+            // tabsLayoutPanel
+            // 
+            this.tabsLayoutPanel.Controls.Add(this.detailsTabLabel);
+            this.tabsLayoutPanel.Controls.Add(this.recolorTabLabel);
+            this.tabsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabsLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.tabsLayoutPanel.Name = "tabsLayoutPanel";
+            this.tabsLayoutPanel.Padding = new System.Windows.Forms.Padding(10, 2, 10, 0);
+            this.tabsLayoutPanel.Size = new System.Drawing.Size(580, 32);
+            this.tabsLayoutPanel.TabIndex = 3;
+            // 
+            // detailsTabLabel
+            // 
+            this.detailsTabLabel.AutoSize = true;
+            this.detailsTabLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.detailsTabLabel.Location = new System.Drawing.Point(10, 2);
+            this.detailsTabLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.detailsTabLabel.Name = "detailsTabLabel";
+            this.detailsTabLabel.Padding = new System.Windows.Forms.Padding(16, 8, 16, 8);
+            this.detailsTabLabel.Size = new System.Drawing.Size(73, 31);
+            this.detailsTabLabel.TabIndex = 0;
+            this.detailsTabLabel.Text = "Details";
+            this.detailsTabLabel.Click += new System.EventHandler(this.TabLabel_Click);
+            // 
+            // recolorTabLabel
+            // 
+            this.recolorTabLabel.AutoSize = true;
+            this.recolorTabLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.recolorTabLabel.Location = new System.Drawing.Point(83, 2);
+            this.recolorTabLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.recolorTabLabel.Name = "recolorTabLabel";
+            this.recolorTabLabel.Padding = new System.Windows.Forms.Padding(16, 8, 16, 8);
+            this.recolorTabLabel.Size = new System.Drawing.Size(84, 31);
+            this.recolorTabLabel.TabIndex = 1;
+            this.recolorTabLabel.Text = "Recolour";
+            this.recolorTabLabel.Click += new System.EventHandler(this.TabLabel_Click);
+            // 
+            // ImageToolboxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(984, 661);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.menuStrip);
             this.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.MainMenuStrip = this.menuStrip;
-            this.Name = "ImageToolbox";
+            this.Name = "ImageToolboxForm";
             this.Text = "Image Toolbox";
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -206,6 +269,9 @@ namespace ImageToolbox
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            this.detailsPanel.ResumeLayout(false);
+            this.tabsLayoutPanel.ResumeLayout(false);
+            this.tabsLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,6 +292,11 @@ namespace ImageToolbox
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Label spacer;
         private System.Windows.Forms.Label noDetailsLabel;
+        private System.Windows.Forms.Panel detailsPanel;
+        private System.Windows.Forms.FlowLayoutPanel tabsLayoutPanel;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label detailsTabLabel;
+        private System.Windows.Forms.Label recolorTabLabel;
     }
 }
 
