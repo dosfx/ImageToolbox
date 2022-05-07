@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace ImageToolbox
 {
-    public partial class ImageToolbox : Form
+    public partial class ImageToolboxForm : Form
     {
         private PsdFile psdFile;
         private LayerPanel baseLayer;
@@ -20,7 +20,7 @@ namespace ImageToolbox
         private LayerDetailsPanel layerDetailsPanel;
         private readonly Dictionary<PsdLayer, LayerDetailsPanel.Details> layerDetails;
 
-        public ImageToolbox()
+        public ImageToolboxForm()
         {
             InitializeComponent();
 

@@ -16,7 +16,7 @@ namespace ImageToolbox
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ImageToolbox());
+            Application.Run(new ImageToolboxForm());
         }
     }
 }

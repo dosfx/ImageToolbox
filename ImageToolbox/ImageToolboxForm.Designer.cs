@@ -1,7 +1,7 @@
 ﻿
 namespace ImageToolbox
 {
-    partial class ImageToolbox
+    partial class ImageToolboxForm
     {
         /// <summary>
         /// Required designer variable.

@@ -74,11 +74,11 @@
     <Compile Include="PsdLayerFlags.cs" />
     <Compile Include="PsdCompression.cs" />
     <Compile Include="PsdChannelId.cs" />
-    <Compile Include="ImageToolbox.cs">
+    <Compile Include="ImageToolboxForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ImageToolbox.Designer.cs">
-      <DependentUpon>ImageToolbox.cs</DependentUpon>
+    <Compile Include="ImageToolboxForm.Designer.cs">
+      <DependentUpon>ImageToolboxForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,8 +88,8 @@
     <Compile Include="PsdBinaryReader.cs" />
     <Compile Include="PsdImageResource.cs" />
     <Compile Include="PsdLayer.cs" />
-    <EmbeddedResource Include="ImageToolbox.resx">
-      <DependentUpon>ImageToolbox.cs</DependentUpon>
+    <EmbeddedResource Include="ImageToolboxForm.resx">
+      <DependentUpon>ImageToolboxForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LayerDetailsPanel.resx">
       <DependentUpon>LayerDetailsPanel.cs</DependentUpon>
