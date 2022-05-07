@@ -43,6 +43,7 @@ namespace ImageToolbox
             this.insidePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.outsidePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.outsideCheckBox = new System.Windows.Forms.CheckBox();
+            this.highlightColorCombo = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.insidePanel.SuspendLayout();
             this.outsidePanel.SuspendLayout();
@@ -197,11 +198,26 @@ namespace ImageToolbox
             this.outsideCheckBox.UseVisualStyleBackColor = true;
             this.outsideCheckBox.CheckedChanged += new System.EventHandler(this.OutsideCheckBox_CheckedChanged);
             // 
+            // highlightColorCombo
+            // 
+            this.highlightColorCombo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.highlightColorCombo.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.highlightColorCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.highlightColorCombo.FormattingEnabled = true;
+            this.highlightColorCombo.Location = new System.Drawing.Point(10, 434);
+            this.highlightColorCombo.Name = "highlightColorCombo";
+            this.highlightColorCombo.Size = new System.Drawing.Size(200, 21);
+            this.highlightColorCombo.TabIndex = 13;
+            this.highlightColorCombo.Visible = false;
+            this.highlightColorCombo.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.HighlightColorCombo_DrawItem);
+            this.highlightColorCombo.SelectedValueChanged += new System.EventHandler(this.HighlightColorCombo_SelectedValueChanged);
+            // 
             // LayerDetailsPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.highlightColorCombo);
             this.Controls.Add(this.outsidePanel);
             this.Controls.Add(this.insidePanel);
             this.Controls.Add(this.averageLabel);
@@ -241,5 +257,6 @@ namespace ImageToolbox
         private System.Windows.Forms.FlowLayoutPanel insidePanel;
         private System.Windows.Forms.FlowLayoutPanel outsidePanel;
         private System.Windows.Forms.CheckBox outsideCheckBox;
+        private System.Windows.Forms.ComboBox highlightColorCombo;
     }
 }

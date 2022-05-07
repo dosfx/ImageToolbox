@@ -17,6 +17,7 @@ namespace ImageToolbox
         private PsdFile psdFile;
         private LayerPanel baseLayer;
         private LayerPanel selectedLayer;
+        private LayerDetailsPanel layerDetailsPanel;
         private readonly Dictionary<PsdLayer, LayerDetailsPanel.Details> layerDetails;
 
         public ImageToolbox()
@@ -215,14 +216,17 @@ namespace ImageToolbox
                     };
                     layerDetails.Add(layer, details);
                 }
-                splitContainer.Panel2.Controls.Add(new LayerDetailsPanel()
+
+                if (layerDetailsPanel == null)
                 {
-                    Dock = DockStyle.Top,
-                    IsHidden = layer.IsHidden,
-                    LayerDetails = details,
-                    LayerName = layer.Name,
-                    LayerOpacity = (layer.Opacity / 255d) * 100
-                });
+                    layerDetailsPanel = new LayerDetailsPanel() { Dock = DockStyle.Top };
+                }
+
+                splitContainer.Panel2.Controls.Add(layerDetailsPanel);
+                layerDetailsPanel.IsHidden = layer.IsHidden;
+                layerDetailsPanel.LayerDetails = details;
+                layerDetailsPanel.LayerName = layer.Name;
+                layerDetailsPanel.LayerOpacity = (layer.Opacity / 255d) * 100;
             }
             else
             {

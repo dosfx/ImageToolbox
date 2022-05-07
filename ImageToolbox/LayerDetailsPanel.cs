@@ -27,7 +27,15 @@ namespace ImageToolbox
             public int BaseOutsidePixels { get; set; }
             public Bitmap BaseInsideImage { get; set; }
             public Bitmap BaseOutsideImage { get; set; }
+            public Color HighlightColor { get; set; }
         }
+
+        private static readonly object[] HighlightColors = new object []
+        {
+            Color.Red,
+            Color.Green,
+            Color.Cyan
+        };
 
         private Details details;
         private bool baseInsideChecked;
@@ -37,6 +45,10 @@ namespace ImageToolbox
         {
             InitializeComponent();
 
+            highlightColorCombo.BackColor = BackColor;
+            highlightColorCombo.ForeColor = ForeColor;
+            highlightColorCombo.Items.AddRange(HighlightColors);
+            highlightColorCombo.SelectedIndex = 0;
             CalcHeight();
         }
 
@@ -60,7 +72,7 @@ namespace ImageToolbox
             set
             {
                 details = value;
-                if (details.Filled)
+                if (details.Filled && details.HighlightColor == SelectedHighlightColor)
                 {
                     FillDetails();
                 }
@@ -68,11 +80,15 @@ namespace ImageToolbox
                 {
                     progressBar.Visible = true;
                     progressBar.Maximum = details.Layer.Bounds.Width;
+                    pictureBox.Image = null;
+                    details.HighlightColor = SelectedHighlightColor;
                     detailsWorker.RunWorkerAsync();
                     CalcHeight();
                 }
             }
         }
+
+        private Color SelectedHighlightColor => (Color)HighlightColors[highlightColorCombo.SelectedIndex];
 
         protected override void OnResize(EventArgs e)
         {
@@ -100,6 +116,7 @@ namespace ImageToolbox
                 insidePanel.Visible = true;
                 outsideCheckBox.Text = $"Pixels Outside Base: {details.BaseOutsidePixels}";
                 outsidePanel.Visible = true;
+                highlightColorCombo.Visible = true;
             }
 
             CalcHeight();
@@ -125,20 +142,6 @@ namespace ImageToolbox
             }
 
             pictureBox.Image = displayImage;
-        }
-
-        private void AddDetail(string text)
-        {
-            Label label = new Label()
-            {
-                BorderStyle = detailLabel.BorderStyle,
-                Dock = detailLabel.Dock,
-                Height = detailLabel.Height,
-                Text = text,
-                TextAlign = detailLabel.TextAlign
-            };
-            Controls.Add(label);
-            Controls.SetChildIndex(label, 0);
         }
 
         private void DetailsWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -173,19 +176,18 @@ namespace ImageToolbox
                                 // translate x,y from layer coords to baselayer coords
                                 int baseX = x - details.Layer.Bounds.Left + details.BaseLayer.Bounds.Left;
                                 int baseY = y - details.Layer.Bounds.Top + details.BaseLayer.Bounds.Top;
-                                Color invert = HslColor.InvertColor(pixel);
 
                                 // if x,y outside the layer bounds or the pixel is transparent
                                 if (!(0 <= baseX && baseX < baseLayerImage.Width && 0 <= baseY && baseY < baseLayerImage.Height) ||
                                     baseLayerImage.GetPixel(baseX, baseY).A == 0)
                                 {
                                     details.BaseOutsidePixels++;
-                                    details.BaseOutsideImage.SetPixel(x, y, Color.Magenta);
+                                    details.BaseOutsideImage.SetPixel(x, y, details.HighlightColor);
                                 }
                                 else
                                 {
                                     details.BaseInsidePixels++;
-                                    details.BaseInsideImage.SetPixel(x, y, Color.Magenta);
+                                    details.BaseInsideImage.SetPixel(x, y, details.HighlightColor);
                                 }
                             }
                         }
@@ -230,6 +232,30 @@ namespace ImageToolbox
         {
             baseOutsideChecked = outsideCheckBox.Checked;
             DrawImage();
+        }
+
+        private void HighlightColorCombo_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index >= 0)
+            {
+                using (SolidBrush brush = new SolidBrush((Color)highlightColorCombo.Items[e.Index]))
+                {
+                    e.Graphics.FillRectangle(brush, e.Bounds);
+                }
+
+                if (e.State.HasFlag(DrawItemState.ComboBoxEdit))
+                {
+                    e.Graphics.DrawString("Highlight", e.Font, Brushes.Black, e.Bounds);
+                }
+            }
+        }
+
+        private void HighlightColorCombo_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (details != null)
+            {
+                LayerDetails = details;
+            }
         }
     }
 }
