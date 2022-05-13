@@ -48,6 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Check.cs" />
+    <Compile Include="ActiveLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="HslColor.cs" />
     <Compile Include="LayerDetailsPanel.cs">
       <SubType>UserControl</SubType>
@@ -88,6 +91,18 @@
     <Compile Include="PsdBinaryReader.cs" />
     <Compile Include="PsdImageResource.cs" />
     <Compile Include="PsdLayer.cs" />
+    <Compile Include="RecolorLayerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RecolorLayerPanel.Designer.cs">
+      <DependentUpon>RecolorLayerPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RecolorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RecolorPanel.Designer.cs">
+      <DependentUpon>RecolorPanel.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="ImageToolboxForm.resx">
       <DependentUpon>ImageToolboxForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,6 +125,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RecolorLayerPanel.resx">
+      <DependentUpon>RecolorLayerPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RecolorPanel.resx">
+      <DependentUpon>RecolorPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

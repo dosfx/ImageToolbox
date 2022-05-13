@@ -37,6 +37,7 @@ namespace ImageToolbox
             this.baseLayerRadioButton = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.extraBorder = new System.Windows.Forms.Label();
+            this.rightArrowLabel = new ImageToolbox.ActiveLabel();
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.imageBox)).BeginInit();
             this.displayPanel.SuspendLayout();
@@ -74,7 +75,7 @@ namespace ImageToolbox
             this.displayPanel.Location = new System.Drawing.Point(101, 30);
             this.displayPanel.Name = "displayPanel";
             this.displayPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.displayPanel.Size = new System.Drawing.Size(629, 70);
+            this.displayPanel.Size = new System.Drawing.Size(589, 70);
             this.displayPanel.TabIndex = 2;
             // 
             // hiddenLabel
@@ -122,6 +123,7 @@ namespace ImageToolbox
             this.panel1.Controls.Add(this.displayPanel);
             this.panel1.Controls.Add(this.nameLabel);
             this.panel1.Controls.Add(this.extraBorder);
+            this.panel1.Controls.Add(this.rightArrowLabel);
             this.panel1.Controls.Add(this.imageBox);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 10);
@@ -138,6 +140,18 @@ namespace ImageToolbox
             this.extraBorder.Size = new System.Drawing.Size(1, 100);
             this.extraBorder.TabIndex = 3;
             this.extraBorder.Text = "label1";
+            // 
+            // rightArrowLabel
+            // 
+            this.rightArrowLabel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.rightArrowLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rightArrowLabel.Location = new System.Drawing.Point(690, 0);
+            this.rightArrowLabel.Name = "rightArrowLabel";
+            this.rightArrowLabel.Size = new System.Drawing.Size(40, 100);
+            this.rightArrowLabel.TabIndex = 8;
+            this.rightArrowLabel.Text = "▶";
+            this.rightArrowLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.rightArrowLabel.Click += new System.EventHandler(this.RightArrowLabel_Click);
             // 
             // LayerPanel
             // 
@@ -167,5 +181,6 @@ namespace ImageToolbox
         private System.Windows.Forms.Label opacityLabel;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private System.Windows.Forms.RadioButton baseLayerRadioButton;
+        private ActiveLabel rightArrowLabel;
     }
 }

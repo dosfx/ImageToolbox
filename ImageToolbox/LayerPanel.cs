@@ -20,12 +20,17 @@ namespace ImageToolbox
             InitializeComponent();
 
             List<Control> controls = new List<Control>(new Control[] { panel1 });
+            Control[] noClick = new Control[]
+            {
+                baseLayerRadioButton,
+                rightArrowLabel,
+            };
             while (controls.Count > 0)
             {
                 Control control = controls.Last();
                 controls.RemoveAt(controls.Count - 1);
                 controls.AddRange(control.Controls.Cast<Control>());
-                if (control != baseLayerRadioButton)
+                if (!noClick.Contains(control))
                 {
                     control.Click += Control_Click;
                 }
@@ -35,12 +40,19 @@ namespace ImageToolbox
         }
 
         public event EventHandler BaseLayerCheckedChanged;
+        public event EventHandler RightArrowClick;
         public event EventHandler SelectedChanged;
 
         public bool BaseLayerChecked
         {
             get => baseLayerRadioButton.Checked;
             set => baseLayerRadioButton.Checked = value;
+        }
+
+        public bool RightArrowVisible
+        {
+            get => rightArrowLabel.Visible;
+            set => rightArrowLabel.Visible = value;
         }
 
         public bool Selected 
@@ -88,6 +100,11 @@ namespace ImageToolbox
         private void BaseLayerRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             BaseLayerCheckedChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void RightArrowLabel_Click(object sender, EventArgs e)
+        {
+            RightArrowClick?.Invoke(this, EventArgs.Empty);
         }
     }
 }

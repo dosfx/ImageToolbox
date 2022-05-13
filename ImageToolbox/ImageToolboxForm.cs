@@ -17,6 +17,7 @@ namespace ImageToolbox
         private PsdFile psdFile;
         private LayerPanel baseLayer;
         private LayerPanel selectedLayer;
+        private object selectedTab;
         private LayerDetailsPanel layerDetailsPanel;
         private readonly Dictionary<PsdLayer, LayerDetailsPanel.Details> layerDetails;
 
@@ -27,6 +28,9 @@ namespace ImageToolbox
             layerDetails = new Dictionary<PsdLayer, LayerDetailsPanel.Details>();
             SelectTab(detailsTabLabel);
         }
+
+        private bool DetailsTabSelected => selectedTab == detailsTabLabel;
+        private bool RecolorTabSelected => selectedTab == recolorTabLabel;
 
         private void OpenPsdMenuItem_Click(object sender, EventArgs e)
         {
@@ -46,6 +50,7 @@ namespace ImageToolbox
             mainPictureBox.Image = null;
             openFileProgressBar.Value = 0;
             openFileProgressBar.Visible = true;
+            recolorPanel.Clear();
             SelectLayer(null);
             openFileWorker.RunWorkerAsync(path);
         }
@@ -101,6 +106,7 @@ namespace ImageToolbox
             mainPictureBox.Image = psdFile.Bitmap;
             layersPanel.SuspendLayout();
             layersPanel.Visible = false;
+            recolorPanel.ImageSize = new Size(psdFile.Width, psdFile.Height);
             Stack<LayerFolderPanel> folderStack = new Stack<LayerFolderPanel>();
             foreach (PsdLayer layer in psdFile.Layers.Reverse())
             {
@@ -143,9 +149,11 @@ namespace ImageToolbox
                         IsHidden = layer.IsHidden,
                         LayerName = layer.Name,
                         LayerOpacity = (layer.Opacity / 255d) * 100,
+                        RightArrowVisible = RecolorTabSelected,
                         Tag = layer,
                     };
                     layerPanel.BaseLayerCheckedChanged += LayerPanel_BaseLayerCheckedChanged;
+                    layerPanel.RightArrowClick += LayerPanel_RightArrowClick;
                     layerPanel.SelectedChanged += LayerPanel_SelectedChanged;
                     row = layerPanel;
                 }
@@ -161,6 +169,14 @@ namespace ImageToolbox
             // sender is the layer panel
             LayerPanel layerPanel = (LayerPanel)sender;
             SelectBaseLayer(layerPanel.BaseLayerChecked ? layerPanel : null);
+        }
+
+        private void LayerPanel_RightArrowClick(object sender, EventArgs e)
+        {
+            if (sender is LayerPanel panel && panel.Tag is PsdLayer layer)
+            {
+                recolorPanel.AddLayer(layer);
+            }
         }
 
         private void SelectBaseLayer(LayerPanel newBaseLayer)
@@ -242,6 +258,7 @@ namespace ImageToolbox
 
         private void SelectTab(object key)
         {
+            selectedTab = key;
             foreach (Control control in tabsLayoutPanel.Controls)
             {
                 control.Font = new Font(Font, control == key ? FontStyle.Bold : FontStyle.Regular);
@@ -249,13 +266,19 @@ namespace ImageToolbox
                 control.Padding = new Padding(control.Padding.Left, control.Padding.Top, control.Padding.Right, control == key ? 8 : 5);
             }
 
-            if (key == detailsTabLabel)
+            if (DetailsTabSelected)
             {
                 splitContainer.Panel2.Controls.SetChildIndex(detailsPanel, 0);
             }
-            else if (key == recolorTabLabel)
+            else if (RecolorTabSelected)
             {
-                splitContainer.Panel2.Controls.SetChildIndex(panel1, 0);
+                splitContainer.Panel2.Controls.SetChildIndex(recolorPanel, 0);
+            }
+
+            // show or hide the right arrows on the layers
+            foreach (LayerPanel panel in layersPanel.Controls.OfType<LayerPanel>())
+            {
+                panel.RightArrowVisible = RecolorTabSelected;
             }
         }
     }
