@@ -29,6 +29,13 @@ namespace ImageToolbox
             SelectTab(detailsTabLabel);
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            new ColorPicker().ShowDialog();
+        }
+
         private bool DetailsTabSelected => selectedTab == detailsTabLabel;
         private bool RecolorTabSelected => selectedTab == recolorTabLabel;
 

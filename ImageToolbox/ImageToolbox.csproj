@@ -51,6 +51,12 @@
     <Compile Include="ActiveLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ColorPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="HslColor.cs" />
     <Compile Include="LayerDetailsPanel.cs">
       <SubType>UserControl</SubType>
@@ -103,6 +109,15 @@
     <Compile Include="RecolorPanel.Designer.cs">
       <DependentUpon>RecolorPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="RecolorSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RecolorSelector.Designer.cs">
+      <DependentUpon>RecolorSelector.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ImageToolboxForm.resx">
       <DependentUpon>ImageToolboxForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -130,6 +145,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RecolorPanel.resx">
       <DependentUpon>RecolorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RecolorSelector.resx">
+      <DependentUpon>RecolorSelector.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

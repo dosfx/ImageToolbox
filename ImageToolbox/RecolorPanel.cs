@@ -28,6 +28,7 @@ namespace ImageToolbox
             Bitmap bitmap = new Bitmap(ImageSize.Width, ImageSize.Height);
             using (Graphics g = Graphics.FromImage(bitmap))
             {
+                g.FillRectangle(Brushes.Gray, 0, 0, ImageSize.Width, ImageSize.Height);
                 g.DrawImage(layer.GetBitmap(), layer.Bounds.Left, layer.Bounds.Top);
             }
 
@@ -50,6 +51,7 @@ namespace ImageToolbox
             layers.Clear();
             layersPanel.Controls.Clear();
             previewPanel.Controls.Clear();
+            previewPanel.Controls.Add(addRecolorLabel);
         }
 
         private void LayerPanel_DownClick(object sender, EventArgs e)
@@ -93,6 +95,24 @@ namespace ImageToolbox
                 ((RecolorLayerPanel)layersPanel.Controls[0]).DownEnabled = false;
                 ((RecolorLayerPanel)layersPanel.Controls[layersPanel.Controls.Count - 1]).UpEnabled = false;
             }
+
+            colorsPanel.Invalidate();
+        }
+
+        private void AddRecolorLabel_Click(object sender, EventArgs e)
+        {
+            previewPanel.Controls.Add(new PictureBox()
+            {
+                Dock = DockStyle.Left,
+                SizeMode = PictureBoxSizeMode.StretchImage,
+                Width = 200,
+            });
+            LayersChanged();
+        }
+
+        private void ColorsPanel_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.FillRectangle(Brushes.Red, new Rectangle(Point.Empty, colorsPanel.Size));
         }
     }
 }

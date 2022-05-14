@@ -12,8 +12,6 @@ namespace ImageToolbox
 {
     public partial class RecolorLayerPanel : UserControl
     {
-        private PsdLayer _layer;
-
         public RecolorLayerPanel()
         {
             InitializeComponent();
