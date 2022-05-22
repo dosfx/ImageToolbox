@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ImageToolbox
 {
-    internal class HslColor
+    public struct HslColor
     {
         public float Hue { get; private set; }
         public float Saturation { get; private set; }

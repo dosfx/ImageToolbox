@@ -51,6 +51,7 @@
     <Compile Include="ActiveLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="HsvColor.cs" />
     <Compile Include="ColorPicker.cs">
       <SubType>Form</SubType>
     </Compile>

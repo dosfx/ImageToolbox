@@ -1,0 +1,12 @@
+C:\dev\ImageToolbox\GradGen\bin\Debug\GradGen.exe.config
+C:\dev\ImageToolbox\GradGen\bin\Debug\GradGen.exe
+C:\dev\ImageToolbox\GradGen\bin\Debug\GradGen.pdb
+C:\dev\ImageToolbox\GradGen\bin\Debug\ImageToolbox.exe
+C:\dev\ImageToolbox\GradGen\bin\Debug\ImageToolbox.pdb
+C:\dev\ImageToolbox\GradGen\bin\Debug\ImageToolbox.exe.config
+C:\dev\ImageToolbox\GradGen\obj\Debug\GradGen.csproj.AssemblyReference.cache
+C:\dev\ImageToolbox\GradGen\obj\Debug\GradGen.csproj.SuggestedBindingRedirects.cache
+C:\dev\ImageToolbox\GradGen\obj\Debug\GradGen.csproj.CoreCompileInputs.cache
+C:\dev\ImageToolbox\GradGen\obj\Debug\GradGen.csproj.CopyComplete
+C:\dev\ImageToolbox\GradGen\obj\Debug\GradGen.exe
+C:\dev\ImageToolbox\GradGen\obj\Debug\GradGen.pdb
