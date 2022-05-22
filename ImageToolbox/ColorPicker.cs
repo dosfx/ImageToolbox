@@ -45,9 +45,6 @@ namespace ImageToolbox
             GetBoundsFromPlaceholder(ref newColorLabel, ref newColorBounds);
             GetBoundsFromPlaceholder(ref oldColorLabel, ref oldColorBounds);
 
-            // get the image from the placeholder
-            GetImageFromPlaceholder(ref squareImage, ref squareBackgrounds);
-
             // radius is slightly bigger to account for the corners of the gradiant path
             double radius = (pickerBounds.Width / 2) / Math.Cos(Math.PI / points);
 
@@ -71,6 +68,7 @@ namespace ImageToolbox
             // math out the bounds of the inner square want the corner to just touch the inside of the 
             float size = (float)(((pickerBounds.Width / 2) - hueRingWidth - 1) * Math.Cos(Math.PI / 4)) - 4;
             squareBounds = CenterSquare(Point.Truncate(center), (int)size);
+            squareBackgrounds = Properties.Resources.Gradients;
 
             // pick the most average color for the center
             hueBrush.CenterColor = Color.FromArgb(255, 128, 128, 128);
@@ -90,7 +88,6 @@ namespace ImageToolbox
 
         ~ColorPicker()
         {
-            squareBackgrounds.Dispose();
             hueBrush.Dispose();
             newColorBrush.Dispose();
             oldColorBrush.Dispose();
@@ -197,23 +194,12 @@ namespace ImageToolbox
             Invalidate();
         }
 
-        private void DisposePlaceholder<T>(ref T placeholder) where T : Control
-        {
-            Controls.Remove(placeholder);
-            placeholder.Dispose();
-            placeholder = null;
-        }
-
-        private void GetImageFromPlaceholder(ref PictureBox placeholer, ref Image image)
-        {
-            image = placeholer.Image;
-            DisposePlaceholder(ref placeholer);
-        }
-
         private void GetBoundsFromPlaceholder(ref Label placeholder, ref Rectangle bounds)
         {
             bounds = placeholder.Bounds;
-            DisposePlaceholder(ref placeholder);
+            Controls.Remove(placeholder);
+            placeholder.Dispose();
+            placeholder = null;
         }
 
         private Point GetBackgroundPointFromHue(float hue)
