@@ -169,5 +169,8 @@
   <ItemGroup>
     <None Include="folder-plus-solid.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gradients.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

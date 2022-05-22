@@ -33,7 +33,7 @@ namespace ImageToolbox
         {
             base.OnLoad(e);
 
-            new ColorPicker().ShowDialog();
+            new ColorPicker() { Color = Color.Red }.ShowDialog();
         }
 
         private bool DetailsTabSelected => selectedTab == detailsTabLabel;
