@@ -31,6 +31,8 @@
             this.pickerLabel = new System.Windows.Forms.Label();
             this.newColorLabel = new System.Windows.Forms.Label();
             this.oldColorLabel = new System.Windows.Forms.Label();
+            this.cancelLabel = new ImageToolbox.ActiveLabel();
+            this.okLabel = new ImageToolbox.ActiveLabel();
             this.SuspendLayout();
             // 
             // pickerLabel
@@ -58,8 +60,29 @@
             this.oldColorLabel.Size = new System.Drawing.Size(100, 50);
             this.oldColorLabel.TabIndex = 16;
             // 
+            // cancelLabel
             // 
+            this.cancelLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.cancelLabel.Location = new System.Drawing.Point(680, 70);
+            this.cancelLabel.Name = "cancelLabel";
+            this.cancelLabel.Size = new System.Drawing.Size(100, 30);
+            this.cancelLabel.TabIndex = 18;
+            this.cancelLabel.Text = "Cancel";
+            this.cancelLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cancelLabel.Click += new System.EventHandler(this.CancelLabel_Click);
             // 
+            // okLabel
+            // 
+            this.okLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.okLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.okLabel.Location = new System.Drawing.Point(680, 20);
+            this.okLabel.Name = "okLabel";
+            this.okLabel.Size = new System.Drawing.Size(100, 30);
+            this.okLabel.TabIndex = 17;
+            this.okLabel.Text = "OK";
+            this.okLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.okLabel.Click += new System.EventHandler(this.OkLabel_Click);
             // 
             // ColorPicker
             // 
@@ -67,6 +90,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(800, 440);
+            this.Controls.Add(this.cancelLabel);
+            this.Controls.Add(this.okLabel);
             this.Controls.Add(this.oldColorLabel);
             this.Controls.Add(this.newColorLabel);
             this.Controls.Add(this.pickerLabel);
@@ -89,5 +114,7 @@
         private System.Windows.Forms.Label pickerLabel;
         private System.Windows.Forms.Label newColorLabel;
         private System.Windows.Forms.Label oldColorLabel;
+        private ActiveLabel okLabel;
+        private ActiveLabel cancelLabel;
     }
 }

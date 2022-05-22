@@ -107,6 +107,30 @@ namespace ImageToolbox
             }
         }
 
+        private void CancelLabel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+        }
+
+        private void OkLabel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else if (e.KeyCode ==  Keys.Escape)
+            {
+                DialogResult = DialogResult.Cancel;
+            }
+        }
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
