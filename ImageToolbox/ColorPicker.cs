@@ -45,6 +45,9 @@ namespace ImageToolbox
             GetBoundsFromPlaceholder(ref newColorLabel, ref newColorBounds);
             GetBoundsFromPlaceholder(ref oldColorLabel, ref oldColorBounds);
 
+            // get the image from the placeholder
+            GetImageFromPlaceholder(ref squareImage, ref squareBackgrounds);
+
             // radius is slightly bigger to account for the corners of the gradiant path
             double radius = (pickerBounds.Width / 2) / Math.Cos(Math.PI / points);
 
@@ -66,9 +69,8 @@ namespace ImageToolbox
             }).ToArray());
 
             // math out the bounds of the inner square want the corner to just touch the inside of the 
-            float size = (float)(((pickerBounds.Width / 2) - hueRingWidth - 1) * Math.Cos(Math.PI / 4));
+            float size = (float)(((pickerBounds.Width / 2) - hueRingWidth - 1) * Math.Cos(Math.PI / 4)) - 4;
             squareBounds = CenterSquare(Point.Truncate(center), (int)size);
-            squareBackgrounds = (Image)new ResourceManager(typeof(ColorPicker)).GetObject("Gradients");
 
             // pick the most average color for the center
             hueBrush.CenterColor = Color.FromArgb(255, 128, 128, 128);
@@ -94,7 +96,7 @@ namespace ImageToolbox
             oldColorBrush.Dispose();
             borderPen.Dispose();
             selectionPen.Dispose();
-    }
+        }
 
         public Color Color
         {
@@ -175,7 +177,6 @@ namespace ImageToolbox
             }
 
             // draw the picker square
-
             g.DrawImage(squareBackgrounds, squareBounds, new Rectangle(GetBackgroundPointFromHue(hsvColor.Hue), squareBounds.Size), GraphicsUnit.Pixel);
 
             // draw the selections
@@ -196,12 +197,23 @@ namespace ImageToolbox
             Invalidate();
         }
 
-        private void GetBoundsFromPlaceholder(ref Label placeholder, ref Rectangle bounds)
+        private void DisposePlaceholder<T>(ref T placeholder) where T : Control
         {
-            bounds = placeholder.Bounds;
             Controls.Remove(placeholder);
             placeholder.Dispose();
             placeholder = null;
+        }
+
+        private void GetImageFromPlaceholder(ref PictureBox placeholer, ref Image image)
+        {
+            image = placeholer.Image;
+            DisposePlaceholder(ref placeholer);
+        }
+
+        private void GetBoundsFromPlaceholder(ref Label placeholder, ref Rectangle bounds)
+        {
+            bounds = placeholder.Bounds;
+            DisposePlaceholder(ref placeholder);
         }
 
         private Point GetBackgroundPointFromHue(float hue)

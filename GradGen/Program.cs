@@ -9,7 +9,7 @@ namespace GradGen
     {
         static void Main(string[] args)
         {
-            const int size = 236;
+            const int size = 228;
             Bitmap[] bitmaps = new Bitmap[360];
             Parallel.For(0, bitmaps.Length, i =>
             {

@@ -28,9 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ColorPicker));
             this.pickerLabel = new System.Windows.Forms.Label();
             this.newColorLabel = new System.Windows.Forms.Label();
             this.oldColorLabel = new System.Windows.Forms.Label();
+            this.squareImage = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.squareImage)).BeginInit();
             this.SuspendLayout();
             // 
             // pickerLabel
@@ -58,12 +61,24 @@
             this.oldColorLabel.Size = new System.Drawing.Size(100, 50);
             this.oldColorLabel.TabIndex = 16;
             // 
+            // 
+            // squareImage
+            // 
+            this.squareImage.ErrorImage = null;
+            this.squareImage.Image = ((System.Drawing.Image)(resources.GetObject("squareImage.Image")));
+            this.squareImage.Location = new System.Drawing.Point(114, 103);
+            this.squareImage.Name = "squareImage";
+            this.squareImage.Size = new System.Drawing.Size(200, 200);
+            this.squareImage.TabIndex = 19;
+            this.squareImage.TabStop = false;
+            // 
             // ColorPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(800, 440);
+            this.Controls.Add(this.squareImage);
             this.Controls.Add(this.oldColorLabel);
             this.Controls.Add(this.newColorLabel);
             this.Controls.Add(this.pickerLabel);
@@ -78,6 +93,7 @@
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ColorPicker";
+            ((System.ComponentModel.ISupportInitialize)(this.squareImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -86,5 +102,6 @@
         private System.Windows.Forms.Label pickerLabel;
         private System.Windows.Forms.Label newColorLabel;
         private System.Windows.Forms.Label oldColorLabel;
+        private System.Windows.Forms.PictureBox squareImage;
     }
 }
