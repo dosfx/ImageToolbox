@@ -1,3 +1,5 @@
 /ImageToolbox/bin/
 /.vs/
 /ImageToolbox/obj/
+/GradGen/bin/
+/GradGen/obj
