@@ -33,6 +33,10 @@
             this.oldColorLabel = new System.Windows.Forms.Label();
             this.cancelLabel = new ImageToolbox.ActiveLabel();
             this.okLabel = new ImageToolbox.ActiveLabel();
+            this.alphaLabel = new System.Windows.Forms.Label();
+            this.redLabel = new System.Windows.Forms.Label();
+            this.greenLabel = new System.Windows.Forms.Label();
+            this.blueLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pickerLabel
@@ -84,12 +88,48 @@
             this.okLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.okLabel.Click += new System.EventHandler(this.OkLabel_Click);
             // 
+            // alphaLabel
+            // 
+            this.alphaLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.alphaLabel.Location = new System.Drawing.Point(460, 140);
+            this.alphaLabel.Name = "alphaLabel";
+            this.alphaLabel.Size = new System.Drawing.Size(280, 20);
+            this.alphaLabel.TabIndex = 19;
+            // 
+            // redLabel
+            // 
+            this.redLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.redLabel.Location = new System.Drawing.Point(460, 180);
+            this.redLabel.Name = "redLabel";
+            this.redLabel.Size = new System.Drawing.Size(280, 20);
+            this.redLabel.TabIndex = 20;
+            // 
+            // greenLabel
+            // 
+            this.greenLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.greenLabel.Location = new System.Drawing.Point(460, 220);
+            this.greenLabel.Name = "greenLabel";
+            this.greenLabel.Size = new System.Drawing.Size(280, 20);
+            this.greenLabel.TabIndex = 21;
+            // 
+            // blueLabel
+            // 
+            this.blueLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.blueLabel.Location = new System.Drawing.Point(460, 260);
+            this.blueLabel.Name = "blueLabel";
+            this.blueLabel.Size = new System.Drawing.Size(280, 20);
+            this.blueLabel.TabIndex = 22;
+            // 
             // ColorPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(800, 440);
+            this.Controls.Add(this.blueLabel);
+            this.Controls.Add(this.greenLabel);
+            this.Controls.Add(this.redLabel);
+            this.Controls.Add(this.alphaLabel);
             this.Controls.Add(this.cancelLabel);
             this.Controls.Add(this.okLabel);
             this.Controls.Add(this.oldColorLabel);
@@ -116,5 +156,9 @@
         private System.Windows.Forms.Label oldColorLabel;
         private ActiveLabel okLabel;
         private ActiveLabel cancelLabel;
+        private System.Windows.Forms.Label alphaLabel;
+        private System.Windows.Forms.Label redLabel;
+        private System.Windows.Forms.Label greenLabel;
+        private System.Windows.Forms.Label blueLabel;
     }
 }
