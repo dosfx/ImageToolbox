@@ -502,7 +502,7 @@ namespace ImageToolbox
 
         private static Color SetAlpha(Color color, int alpha)
         {
-            return Color.FromArgb(alpha, color.A, color.G, color.B);
+            return Color.FromArgb(alpha, color.R, color.G, color.B);
         }
 
         private static Color SetBlue(Color color, int blue)
