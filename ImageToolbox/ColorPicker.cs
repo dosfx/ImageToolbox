@@ -281,6 +281,7 @@ namespace ImageToolbox
             g.DrawRectangle(borderPen, Rectangle.Union(newColorBounds, oldColorBounds));
 
             // bars
+            g.FillRectangle(alphaBackBrush, alphaBrush.Rectangle);
             DrawBar(g, alphaBrush);
             DrawBar(g, redBrush);
             DrawBar(g, greenBrush);
@@ -317,7 +318,6 @@ namespace ImageToolbox
         private void DrawBar(Graphics g, LinearGradientBrush brush)
         {
             Rectangle bounds = Rectangle.Round(brush.Rectangle);
-            g.FillRectangle(alphaBackBrush, bounds);
             g.FillRectangle(brush, bounds);
             g.DrawRectangle(borderPen, bounds);
         }
@@ -449,9 +449,10 @@ namespace ImageToolbox
             Color color = Color.FromArgb(alpha, hsv.ToColor());
             newColorBrush.Color = color;
             alphaBrush.LinearColors = new[] { SetAlpha(color, 0), SetAlpha(color, 255) };
-            redBrush.LinearColors = new[] { SetRed(color, 0), SetRed(color, 255) };
-            greenBrush.LinearColors = new[] { SetGreen(color, 0), SetGreen(color, 255) };
-            blueBrush.LinearColors = new[] { SetBlue(color, 0), SetBlue(color, 255) };
+            Color noAlpha = SetAlpha(color, 255);
+            redBrush.LinearColors = new[] { SetRed(noAlpha, 0), SetRed(noAlpha, 255) };
+            greenBrush.LinearColors = new[] { SetGreen(noAlpha, 0), SetGreen(noAlpha, 255) };
+            blueBrush.LinearColors = new[] { SetBlue(noAlpha, 0), SetBlue(noAlpha, 255) };
 
             // selection color is the inverted hue
             selectionPen.Color = HsvColor.FromHsv((hsvColor.Hue + 180) % 360, 1, 1).ToColor();
