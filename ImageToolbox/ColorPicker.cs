@@ -18,18 +18,20 @@ namespace ImageToolbox
     {
         private const int hueRingWidth = 32;
         private const double hueOffsetRadians = Math.PI + (Math.PI / 6);
-        private const int labelMargin = 4;
         private readonly Rectangle pickerBounds;
         private readonly Rectangle squareBounds;
         private readonly Rectangle newColorBounds;
         private readonly Rectangle oldColorBounds;
         private readonly Image squareBackgrounds;
-        private readonly PathGradientBrush hueBrush;
+        private readonly PathGradientBrush hueRingBrush;
         private readonly TextureBrush alphaBackBrush;
         private readonly LinearGradientBrush alphaBrush;
         private readonly LinearGradientBrush redBrush;
         private readonly LinearGradientBrush greenBrush;
         private readonly LinearGradientBrush blueBrush;
+        private readonly LinearGradientBrush hueBrush;
+        private readonly LinearGradientBrush satBrush;
+        private readonly LinearGradientBrush valBrush;
         private readonly SolidBrush oldColorBrush;
         private readonly SolidBrush newColorBrush;
         private readonly SolidBrush textBrush;
@@ -44,6 +46,9 @@ namespace ImageToolbox
         private bool redDrag;
         private bool greenDrag;
         private bool blueDrag;
+        private bool hueDrag;
+        private bool satDrag;
+        private bool valDrag;
 
         public ColorPicker()
         {
@@ -65,7 +70,7 @@ namespace ImageToolbox
 
             // center is pretty simple
             PointF center = Center(pickerBounds);
-            hueBrush = new PathGradientBrush(Enumerable.Range(0, points).Select(i =>
+            hueRingBrush = new PathGradientBrush(Enumerable.Range(0, points).Select(i =>
             {
                 // convert index into degrees into radians
                 double rad = ToRadians(i * (360d / points));
@@ -83,10 +88,10 @@ namespace ImageToolbox
             squareBackgrounds = Properties.Resources.Gradients;
 
             // pick the most average color for the center
-            hueBrush.CenterColor = Color.FromArgb(255, 128, 128, 128);
+            hueRingBrush.CenterColor = Color.FromArgb(255, 128, 128, 128);
 
             // distribute the colors around the points
-            hueBrush.SurroundColors = Enumerable.Range(0, points).Select(i =>
+            hueRingBrush.SurroundColors = Enumerable.Range(0, points).Select(i =>
             {
                 return HslColor.FromHsl(i * (360f / points), 1, 0.5f).ToColor();
             }).ToArray();
@@ -105,6 +110,16 @@ namespace ImageToolbox
             redBrush = new LinearGradientBrush(GetBoundsFromPlaceholder(ref redLabel), default, default, LinearGradientMode.Horizontal);
             greenBrush = new LinearGradientBrush(GetBoundsFromPlaceholder(ref greenLabel), default, default, LinearGradientMode.Horizontal);
             blueBrush = new LinearGradientBrush(GetBoundsFromPlaceholder(ref blueLabel), default, default, LinearGradientMode.Horizontal);
+            hueBrush = new LinearGradientBrush(GetBoundsFromPlaceholder(ref hueLabel), default, default, LinearGradientMode.Horizontal)
+            {
+                InterpolationColors = new ColorBlend()
+                {
+                    Colors = Enumerable.Range(0, 7).Select(i => HsvColor.FromHsv((i / 6f) * 360, 1, 1).ToColor()).ToArray(),
+                    Positions = Enumerable.Range(0, 7).Select(i => i / 6f).ToArray(),
+                }
+            };
+            satBrush = new LinearGradientBrush(GetBoundsFromPlaceholder(ref satLabel), default, default, LinearGradientMode.Horizontal);
+            valBrush = new LinearGradientBrush(GetBoundsFromPlaceholder(ref valLabel), default, default, LinearGradientMode.Horizontal);
             newColorBrush = new SolidBrush(default);
             oldColorBrush = new SolidBrush(default);
             textBrush = new SolidBrush(ForeColor);
@@ -116,12 +131,15 @@ namespace ImageToolbox
 
         ~ColorPicker()
         {
-            hueBrush.Dispose();
+            hueRingBrush.Dispose();
             alphaBackBrush.Dispose();
             alphaBrush.Dispose();
             redBrush.Dispose();
             greenBrush.Dispose();
             blueBrush.Dispose();
+            hueBrush.Dispose();
+            satBrush.Dispose();
+            valBrush.Dispose();
             newColorBrush.Dispose();
             oldColorBrush.Dispose();
             textBrush.Dispose();
@@ -174,34 +192,49 @@ namespace ImageToolbox
                 {
                     // inside the ring
                     ringDrag = true;
-                    SetHueFromPoint(e.Location);
+                    SetHueFromRing(e.Location);
                 }
                 else if (squareBounds.Contains(e.Location))
                 {
                     // inside the inner square
                     squareDrag = true;
-                    SetSatValFromPoint(e.Location);
+                    SetSatValFromSquare(e.Location);
                 }
             }
             else if (alphaBrush.Rectangle.Contains(e.Location))
             {
                 alphaDrag = true;
-                SetAlphaFromPoint(e.Location);
+                SetAlphaFromBar(e.Location);
             }
             else if (redBrush.Rectangle.Contains(e.Location))
             {
                 redDrag = true;
-                SetRedFromPoint(e.Location);
+                SetRedFromBar(e.Location);
             }
             else if (greenBrush.Rectangle.Contains(e.Location))
             {
                 greenDrag = true;
-                SetGreenFromPoint(e.Location);
+                SetGreenFromBar(e.Location);
             }
             else if (blueBrush.Rectangle.Contains(e.Location))
             {
                 blueDrag = true;
-                SetBlueFromPoint(e.Location);
+                SetBlueFromBar(e.Location);
+            }
+            else if (hueBrush.Rectangle.Contains(e.Location))
+            {
+                hueDrag = true;
+                SetHueFromBar(e.Location);
+            }
+            else if (satBrush.Rectangle.Contains(e.Location))
+            {
+                satDrag = true;
+                SetSatFromBar(e.Location);
+            }
+            else if (valBrush.Rectangle.Contains(e.Location))
+            {
+                valDrag = true;
+                SetValFromBar(e.Location);
             }
         }
 
@@ -212,28 +245,40 @@ namespace ImageToolbox
             if (ringDrag)
             {
                 // update the color
-                SetHueFromPoint(e.Location);
+                SetHueFromRing(e.Location);
             }
             else if (squareDrag)
             {
                 // update the color, which also updates the little selection ring
-                SetSatValFromPoint(e.Location);
+                SetSatValFromSquare(e.Location);
             }
             else if (alphaDrag)
             {
-                SetAlphaFromPoint(e.Location);
+                SetAlphaFromBar(e.Location);
             }
             else if (redDrag)
             {
-                SetRedFromPoint(e.Location);
+                SetRedFromBar(e.Location);
             }
             else if (greenDrag)
             {
-                SetGreenFromPoint(e.Location);
+                SetGreenFromBar(e.Location);
             }
             else if (blueDrag)
             {
-                SetBlueFromPoint(e.Location);
+                SetBlueFromBar(e.Location);
+            }
+            else if (hueDrag)
+            {
+                SetHueFromBar(e.Location);
+            }
+            else if (satDrag)
+            {
+                SetSatFromBar(e.Location);
+            }
+            else if (valDrag)
+            {
+                SetValFromBar(e.Location);
             }
         }
 
@@ -247,6 +292,9 @@ namespace ImageToolbox
             redDrag = false;
             greenDrag = false;
             blueDrag = false;
+            hueDrag = false;
+            satDrag = false;
+            valDrag = false;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -259,7 +307,7 @@ namespace ImageToolbox
             if (rectangle.IntersectsWith(e.ClipRectangle))
             {
                 // draw the ring
-                g.FillEllipse(hueBrush, rectangle);
+                g.FillEllipse(hueRingBrush, rectangle);
 
                 // draw a circle over the center to convert the hue circle into a ring
                 using (SolidBrush brush = new SolidBrush(BackColor))
@@ -274,6 +322,14 @@ namespace ImageToolbox
             // draw the picker square
             g.DrawImage(squareBackgrounds, squareBounds, new Rectangle(GetBackgroundPointFromHue(hsvColor.Hue), squareBounds.Size), GraphicsUnit.Pixel);
 
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // draw the selections
+            g.DrawEllipse(selectionPen, CenterSquare(SatValToPoint(hsvColor.Saturation, hsvColor.Value), 10));
+            g.DrawEllipse(selectionPen, CenterSquare(HueToPoint(hsvColor.Hue), 10));
+
+            g.SmoothingMode = SmoothingMode.None;
+
             // draw the new/old palettes
             g.FillRectangle(alphaBackBrush, Rectangle.Union(newColorBounds, oldColorBounds));
             g.FillRectangle(newColorBrush, newColorBounds);
@@ -282,63 +338,48 @@ namespace ImageToolbox
 
             // bars
             g.FillRectangle(alphaBackBrush, alphaBrush.Rectangle);
-            DrawBar(g, alphaBrush);
-            DrawBar(g, redBrush);
-            DrawBar(g, greenBrush);
-            DrawBar(g, blueBrush);
+            DrawBar(g, alphaBrush, "A", Color.A.ToString(), Color.A / 255f);
+            DrawBar(g, redBrush, "R", Color.R.ToString(), Color.R / 255f);
+            DrawBar(g, greenBrush, "G", Color.G.ToString(), Color.G / 255f);
+            DrawBar(g, blueBrush, "B", Color.B.ToString(), Color.B / 255f);
+            DrawBar(g, hueBrush, "H", hsvColor.Hue.ToString("0°"), hsvColor.Hue / 360f);
+            DrawBar(g, satBrush, "S", hsvColor.Saturation.ToString("0%"), hsvColor.Saturation);
+            DrawBar(g, valBrush, "V", hsvColor.Value.ToString("0%"), hsvColor.Value);
+        }
+
+        private int BarValueToX(float value, RectangleF bounds)
+        {
+            return (int)((value * bounds.Width) + bounds.Left);
+        }
+
+        private void DrawBar(Graphics g, LinearGradientBrush brush, string label, string valueStr, float value)
+        {
+            Rectangle bounds = Rectangle.Round(brush.Rectangle);
+            GraphicsState state = g.Save();
+            g.SmoothingMode = SmoothingMode.None;
+
+            // draw the bar and border
+            g.FillRectangle(brush, bounds);
+            g.DrawRectangle(borderPen, bounds);
 
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            // labels
-            DrawBarLabel(g, "A", alphaBrush.Rectangle);
-            DrawBarLabel(g, "R", redBrush.Rectangle);
-            DrawBarLabel(g, "G", greenBrush.Rectangle);
-            DrawBarLabel(g, "B", blueBrush.Rectangle);
-
-            // values
-            DrawBarValue(g, alpha, alphaBrush.Rectangle);
-            DrawBarValue(g, Color.R, redBrush.Rectangle);
-            DrawBarValue(g, Color.G, greenBrush.Rectangle);
-            DrawBarValue(g, Color.B, blueBrush.Rectangle);
-
-            // draw the selections
-            g.DrawEllipse(selectionPen, CenterSquare(SatValToPoint(hsvColor.Saturation, hsvColor.Value), 10));
-            g.DrawEllipse(selectionPen, CenterSquare(HueToPoint(hsvColor.Hue), 10));
-            DrawBarSelection(g, alpha, alphaBrush.Rectangle);
-            DrawBarSelection(g, Color.R, redBrush.Rectangle);
-            DrawBarSelection(g, Color.G, greenBrush.Rectangle);
-            DrawBarSelection(g, Color.B, blueBrush.Rectangle);
-        }
-
-        private int BarValueToX(int value, RectangleF bounds)
-        {
-            return (int)(((value / 255f) * bounds.Width) + bounds.Left);
-        }
-
-        private void DrawBar(Graphics g, LinearGradientBrush brush)
-        {
-            Rectangle bounds = Rectangle.Round(brush.Rectangle);
-            g.FillRectangle(brush, bounds);
-            g.DrawRectangle(borderPen, bounds);
-        }
-
-        private void DrawBarLabel(Graphics g, string label, RectangleF bounds)
-        {
-            g.DrawString(label, Font, textBrush, new RectangleF(bounds.Location - new Size(20, 0), new Size(20, 20)),
+            // label
+            g.DrawString(label, Font, textBrush, new RectangleF(brush.Rectangle.Location - new Size(20, 0), new Size(20, 20)),
                 new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
-        }
 
-        private void DrawBarSelection(Graphics g, int value, RectangleF bounds)
-        {
-            value = BarValueToX(value, bounds);
-            g.FillRectangle(textBrush, CenterSquare(new PointF(value, bounds.Top - 2), 3));
-            g.FillRectangle(textBrush, CenterSquare(new PointF(value, bounds.Bottom + 2), 3));
-        }
+            // convert the value into bar bounds
+            value = BarValueToX(value, brush.Rectangle);
 
-        private void DrawBarValue(Graphics g, int value, RectangleF bounds)
-        {
-            g.DrawString(value.ToString(), Font, textBrush, new RectangleF(bounds.Location + new SizeF(bounds.Width, 0), new Size(40, 20)),
+            // value label
+            g.DrawString(valueStr, Font, textBrush, new RectangleF(brush.Rectangle.Location + new SizeF(brush.Rectangle.Width, 0), new Size(40, 20)),
                 new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center });
+
+            // value ticks
+            g.FillRectangle(textBrush, CenterSquare(new PointF(value, brush.Rectangle.Top - 2), 3));
+            g.FillRectangle(textBrush, CenterSquare(new PointF(value, brush.Rectangle.Bottom + 2), 3));
+
+            g.Restore(state);
         }
 
         private Rectangle GetBoundsFromPlaceholder(ref Label placeholder)
@@ -385,13 +426,13 @@ namespace ImageToolbox
             return innerRadius <= radius2 && radius2 <= outerRadius;
         }
 
-        private int PointToBar(Point p, RectangleF bounds)
+        private float PointToBar(Point p, RectangleF bounds)
         {
             // clamp into the bar
             int x = Math.Min(Math.Max((int)bounds.Left, p.X), (int)bounds.Right);
 
             // math
-            return (int)Math.Floor(((x - bounds.Left) / (double)bounds.Width) * 255);
+            return (x - bounds.Left) / bounds.Width;
         }
 
         private float PointToHue(Point p)
@@ -425,17 +466,17 @@ namespace ImageToolbox
                 ((1 - val) * squareBounds.Height) + squareBounds.Y);
         }
 
-        private void SetAlphaFromPoint(Point p)
+        private void SetAlphaFromBar(Point p)
         {
-            alpha = PointToBar(p, alphaBrush.Rectangle);
+            alpha = (int)(PointToBar(p, alphaBrush.Rectangle) * 255);
 
             // "set" the color to itself to get it to notice the new alpha
             SetColor(hsvColor);
         }
 
-        private void SetBlueFromPoint(Point p)
+        private void SetBlueFromBar(Point p)
         {
-            SetColor(SetBlue(Color, PointToBar(p, blueBrush.Rectangle)));
+            SetColor(SetBlue(Color, (int)(PointToBar(p, blueBrush.Rectangle) * 255)));
         }
 
         private void SetColor(Color color)
@@ -453,29 +494,41 @@ namespace ImageToolbox
             redBrush.LinearColors = new[] { SetRed(noAlpha, 0), SetRed(noAlpha, 255) };
             greenBrush.LinearColors = new[] { SetGreen(noAlpha, 0), SetGreen(noAlpha, 255) };
             blueBrush.LinearColors = new[] { SetBlue(noAlpha, 0), SetBlue(noAlpha, 255) };
+            satBrush.LinearColors = new[] { SetSaturation(hsvColor, 0), SetSaturation(hsvColor, 1) };
+            valBrush.LinearColors = new[] { SetValue(hsvColor, 0), SetValue(hsvColor, 1) };
 
             // selection color is the inverted hue
             selectionPen.Color = HsvColor.FromHsv((hsvColor.Hue + 180) % 360, 1, 1).ToColor();
             Invalidate();
         }
 
-        private void SetGreenFromPoint(Point p)
+        private void SetGreenFromBar(Point p)
         {
-            SetColor(SetGreen(Color, PointToBar(p, greenBrush.Rectangle)));
+            SetColor(SetGreen(Color, (int)(PointToBar(p, greenBrush.Rectangle) * 255)));
         }
 
-        private void SetHueFromPoint(Point p)
+        private void SetHueFromBar(Point p)
+        {
+            SetColor(HsvColor.FromHsv(PointToBar(p, hueBrush.Rectangle) * 360, hsvColor.Saturation, hsvColor.Value));
+        }
+
+        private void SetHueFromRing(Point p)
         {
             // no clamping needed
             SetColor(HsvColor.FromHsv(PointToHue(p), hsvColor.Saturation, hsvColor.Value));
         }
 
-        private void SetRedFromPoint(Point p)
+        private void SetRedFromBar(Point p)
         {
-            SetColor(SetRed(Color, PointToBar(p, redBrush.Rectangle)));
+            SetColor(SetRed(Color, (int)(PointToBar(p, redBrush.Rectangle) * 255)));
         }
 
-        private void SetSatValFromPoint(Point p)
+        private void SetSatFromBar(Point p)
+        {
+            SetColor(SetSaturation(hsvColor, PointToBar(p, satBrush.Rectangle)));
+        }
+
+        private void SetSatValFromSquare(Point p)
         {
             // clamp into the square
             p.X = Math.Min(Math.Max(squareBounds.Left, p.X), squareBounds.Right);
@@ -483,6 +536,11 @@ namespace ImageToolbox
 
             // math out the sat and val
             SetColor(HsvColor.FromHsv(hsvColor.Hue, PointToSat(p), PointToVal(p)));
+        }
+
+        private void SetValFromBar(Point p)
+        {
+            SetColor(SetValue(hsvColor, PointToBar(p, valBrush.Rectangle)));
         }
 
         private static PointF Center(Rectangle rect)
@@ -519,6 +577,16 @@ namespace ImageToolbox
         private static Color SetRed(Color color, int red)
         {
             return Color.FromArgb(color.A, red, color.G, color.B);
+        }
+
+        private static Color SetSaturation(HsvColor color, float saturation)
+        {
+            return HsvColor.FromHsv(color.Hue, saturation, color.Value).ToColor();
+        }
+
+        private static Color SetValue(HsvColor color, float value)
+        {
+            return HsvColor.FromHsv(color.Hue, color.Saturation, value).ToColor();
         }
 
         private static double ToDegrees(double rad)

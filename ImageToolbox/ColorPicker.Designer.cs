@@ -37,6 +37,9 @@
             this.redLabel = new System.Windows.Forms.Label();
             this.greenLabel = new System.Windows.Forms.Label();
             this.blueLabel = new System.Windows.Forms.Label();
+            this.hueLabel = new System.Windows.Forms.Label();
+            this.satLabel = new System.Windows.Forms.Label();
+            this.valLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // pickerLabel
@@ -120,12 +123,39 @@
             this.blueLabel.Size = new System.Drawing.Size(280, 20);
             this.blueLabel.TabIndex = 22;
             // 
+            // hueLabel
+            // 
+            this.hueLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hueLabel.Location = new System.Drawing.Point(460, 300);
+            this.hueLabel.Name = "hueLabel";
+            this.hueLabel.Size = new System.Drawing.Size(280, 20);
+            this.hueLabel.TabIndex = 23;
+            // 
+            // satLabel
+            // 
+            this.satLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.satLabel.Location = new System.Drawing.Point(460, 340);
+            this.satLabel.Name = "satLabel";
+            this.satLabel.Size = new System.Drawing.Size(280, 20);
+            this.satLabel.TabIndex = 24;
+            // 
+            // valLabel
+            // 
+            this.valLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.valLabel.Location = new System.Drawing.Point(460, 380);
+            this.valLabel.Name = "valLabel";
+            this.valLabel.Size = new System.Drawing.Size(280, 20);
+            this.valLabel.TabIndex = 25;
+            // 
             // ColorPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.ClientSize = new System.Drawing.Size(800, 440);
+            this.Controls.Add(this.valLabel);
+            this.Controls.Add(this.satLabel);
+            this.Controls.Add(this.hueLabel);
             this.Controls.Add(this.blueLabel);
             this.Controls.Add(this.greenLabel);
             this.Controls.Add(this.redLabel);
@@ -160,5 +190,8 @@
         private System.Windows.Forms.Label redLabel;
         private System.Windows.Forms.Label greenLabel;
         private System.Windows.Forms.Label blueLabel;
+        private System.Windows.Forms.Label hueLabel;
+        private System.Windows.Forms.Label satLabel;
+        private System.Windows.Forms.Label valLabel;
     }
 }
